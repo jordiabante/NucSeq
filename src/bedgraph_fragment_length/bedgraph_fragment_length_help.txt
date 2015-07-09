@@ -1,0 +1,23 @@
+Description:
+  Computes the fragment length distribution.
+
+Usage:
+	bedgraph_fragment_length.sh  [OPTIONS]  -- BEDGRAPHFILE
+
+Options:
+  -h|--help           Help
+  -d|--outdir         Output directory
+  -p|--plot           Plot histogram using ggplot
+  -k|--keep           Keep the txt file generated
+  -f|--outfilename    Echo's the filename
+         
+Examples:
+   bedgrap_fragment_length.sh -p -- r1s1.bedGraph.gz 
+
+Date:
+  2015/07/09
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com
+

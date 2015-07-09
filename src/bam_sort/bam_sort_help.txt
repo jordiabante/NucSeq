@@ -1,0 +1,22 @@
+Description:
+  Sort a BAM file. 
+
+Usage:
+  bam_sort.sh  [OPTIONS]  -- BAM_FILE
+
+Options:
+  -h--help                Help.
+  -o--outdir              Output directory. Default: $PWD
+
+Examples:
+  bam_sort.sh -t 16 -m 100M -- paired_end.bam 
+
+Dependancies:
+  samtools
+
+Date:
+  2015/07/09
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com

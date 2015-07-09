@@ -1,0 +1,22 @@
+Description:
+  Build a cff file containing the midpoints from each pair of reads (R1-gap-R2) from a sorted bam file.
+  
+Usage:
+	bam_to_cff.sh  [OPTIONS]  -- BAM_FILE
+
+Options:
+  -h|--help           Help
+  -d|--outdir         Output directory
+
+Examples:               
+  bam_to_cff.sh -- r1s1.sorted.bam
+
+Dependancies:
+  samtools
+
+Date:
+  2015/07/09
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com

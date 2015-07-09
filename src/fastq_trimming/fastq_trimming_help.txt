@@ -1,0 +1,20 @@
+Description:
+  Trim reads in a .fastq file.
+
+Usage:
+	fastqTrim.sh  [options]  -- FASTQFILE
+
+Options:
+  -h|--help           Help
+  -d|--outdir         Output directory
+  -f|--outfilename    Outfile name
+  -l|--readLength     Final read length. Default: '50'
+
+Examples:               
+  fastqTrim.sh -l 40 -- testRound1_R1.fastq.gz
+
+Date:
+  2014/10/29
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
