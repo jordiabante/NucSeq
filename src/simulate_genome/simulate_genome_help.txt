@@ -1,0 +1,25 @@
+Description:
+  Generates a random genome. 
+
+Usage:
+	simulate_genome.sh  [OPTIONS]
+
+Options:
+  -h|--help           Help message.
+  -d|--outdir         Output directory. Default: ./ .
+  -c|--chr            Number of chromosomes. Default: 5.
+  -l|--length         Length of the sequence. Default: 2000.
+  -p|--prefix         Prefix of the output. Default: simulated_genome.
+         
+Examples:
+  simulate_genome.sh -p test_2 -c 10 -l 40
+
+Dependancies:
+  random_sequence_generator.sh
+
+Date:
+  2015/07/15
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com
