@@ -11,6 +11,9 @@ Options:
 Examples:
    simulate_fastq_pair.sh -- read_R1.fastq.gz
 
+Dependancies:
+  reverse_complement.sh
+
 Date:
   2015/07/15
 
