@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
-
-set -f #Disable pathname expansion.
 shopt -s extglob
-script_name=$(basename "$0" .sh)
 
-TEMP=$(getopt -o hfd:l: -l help,outfilename:,outdir:,length: -n "$script_name.sh" -- "$@")
+abspath_script="$(readlink -f -e "$0")"
+script_absdir="$(dirname "$abspath_script")"
+script_name="$(basename "$0" .sh)"
+
+if [ $# -eq 0 ]
+    then
+        cat "$script_absdir/${script_name}_help.txt"
+        exit 1
+fi
+
+TEMP=$(getopt -o hd:l: -l help,outdir:,length: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -14,9 +21,8 @@ fi
 
 eval set -- "$TEMP"
 
-abspath_script=$(readlink -f -e "$0")
-script_absdir=$(dirname "$abspath_script")
-outdir=.
+# Defaults
+outdir="$PWD"
 readLength=50
 
 while true
@@ -25,10 +31,6 @@ do
     -h|--help)
       cat "$script_absdir"/${script_name}_help.txt
       exit
-      ;;  
-    -f|--outfilename)
-      outfilename=x
-      shift
       ;;  
     -d|--outdir)
       outdir=$2
@@ -49,14 +51,13 @@ do
   esac
 done
 
+# Read input
 inputFile=$1
-prefix="$(basename.sh "$inputFile" -x '\.fastq.gz')"
-outfile="$outdir/"$prefix"_trim"$readLength".fastq.gz"
+prefix="${inputFile%.*}"
+outfile="${outdir}/${prefix}_trim${readLength}.fastq.gz"
 
-if [ $outfilename ]
-then
-	echo "$outfile"
-else	
-  zcat "$inputFile" | awk -v readLength="$readLength" '{if(NR%2!=0){print $0}else{print substr($0,0,readLength)}}' | gzip > "$outfile"
-fi
+# Run
+  zcat "$inputFile" | \
+    awk -v readLength="$readLength" '{if(NR%2!=0){print $0}else{print substr($0,0,readLength)}}' | \
+    gzip > "$outfile"
 
