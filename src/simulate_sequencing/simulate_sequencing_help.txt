@@ -13,9 +13,6 @@ Options:
 Examples:
   simulate_sequencing.sh -- reference.fasta
 
-Dependancies:
-  simulate_sequencing.sh
-
 Date:
   2015/07/15
 
