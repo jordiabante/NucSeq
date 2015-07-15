@@ -5,12 +5,6 @@ abspath_script="$(readlink -f -e "$0")"
 script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
-if [ $# -eq 0 ]
-    then
-        cat "$script_absdir/${script_name}_help.txt"
-        exit 1
-fi
-
 TEMP=$(getopt -o hl:r -l help,length:,rna -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
