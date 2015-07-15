@@ -17,6 +17,7 @@ Installation
 Dependancies
 -----------------
 1. samtools
+2. HTSeq
 
 Usage
 -----------------
