@@ -72,21 +72,20 @@ mkdir -p "$outdir"
 
 # Count chromosomes in .fasta file
 num_chr="$(cat "$referenceFile" | grep "^>" | wc -l)"
+length="$(($length - 1))"
 
 # Run
 for i in `eval echo {1..${num_reads}}`;
 do
   # Pick a chr randomly
   chr_number="$(shuf -i 1-${num_chr} -n 1)"
-  # Read ID
-  id="@simulated_read_${prefix}:${i}"
   # Store the chr in chr
   chr="$(cat "$referenceFile" | grep -v "^>" | sed -n ${chr_number}p )"
   # Chromosome length
   chr_length="$(echo "$chr" | wc -c)"
   # Start and end R1
   bound="$(($chr_length - $length))"
-  start="$(shuf -i 0-${bound} -n 1)"
+  start="$(shuf -i 1-${bound} -n 1)"
   end="$((start + $length))"
   # Trim the read and do the complimentary
   read_R1="$(echo "$chr" | cut -c "${start}-${end}")"
@@ -102,6 +101,7 @@ do
   read_R2="$(echo "$chr" | cut -c "${start}-${end}")"
   read_R2_reverse_complemented="$(reverse_complement.sh "$read_R2")"
   # Print it
+  id="@simulated_read_${prefix}:${i}"
   echo -e "${id}\n${read_R1}\n+\nQuality" >> "$outfile1"
   echo -e "${id}\n${read_R2_reverse_complemented}\n+\nQuality" >> "$outfile2"
 done
