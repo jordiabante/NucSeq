@@ -1,0 +1,1 @@
+../src/bowtie_alignment/bowtie_alignment.sh

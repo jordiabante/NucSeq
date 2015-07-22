@@ -1,0 +1,22 @@
+Description
+  Generate indexes from fasta files for bowtie alignment.
+
+Command
+  bowtie_index_generation.sh [OPTIONS] -- reference.fasta
+
+Options
+  -h--help        Help
+
+Examples
+  bowtie_index_generation.sh -- saccharomyces.fasta
+
+Dependancies:
+  bowtie2
+
+Date:
+  2015/07/21
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com
+

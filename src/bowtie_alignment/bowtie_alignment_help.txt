@@ -1,0 +1,32 @@
+Description:
+  Unique local alignment with quality filter.
+
+Usage:
+  bowtie_alignment.sh  [OPTIONS]  -- REFERENCE READ1 READ2
+
+Options:
+  -h--help                Help.
+  -d--outdir              Output directory.
+  -t--threads             Threads. Default: 2
+  -m--mismatches          Mismatches. Default: 1
+  -x--max_fragment_length Maximum fragment length. Default: 250
+  -i--mix_fragment_length Minimum fragment length. Default: 50
+
+Examples:
+  ../bowtie_alignment.sh -i 175 -- test_bowtie_alignment.fa \
+  simulated_read_test_bowtie_alignment_R1.fastq.gz \
+  simulated_read_test_bowtie_alignment_R2.fastq.gz               
+
+Upstream:
+	bowtie_index_generation.sh
+
+Dependancies:
+  bowtie2
+  samtools
+
+Date:
+  2015/07/21
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com
