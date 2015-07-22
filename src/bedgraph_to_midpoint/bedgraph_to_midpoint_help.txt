@@ -1,0 +1,22 @@
+Description:
+  Converts a bedgraph file to a cff file.
+  
+Usage:
+  bedgraph_to_midpoint.sh  [OPTIONS]  -- BEDGRAPH_FILE
+
+Options:
+  -h|--help           Help
+  -d|--outdir         Output directory
+
+Examples:               
+  bedgraph_to_midpoint.sh -- r1s1.bedgraph.gz
+
+Upstream:
+  bam_to_bedgraph.sh
+
+Date:
+  2015/07/22
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com
