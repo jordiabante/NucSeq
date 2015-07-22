@@ -1,0 +1,1 @@
+../src/bedgraph_to_midpoint/bedgraph_to_midpoint.sh

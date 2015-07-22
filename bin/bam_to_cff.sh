@@ -1,1 +1,0 @@
-../src/bam_to_cff/bam_to_cff.sh

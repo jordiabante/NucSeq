@@ -1,0 +1,1 @@
+../src/bam_to_midpoint/bam_to_midpoint.sh
