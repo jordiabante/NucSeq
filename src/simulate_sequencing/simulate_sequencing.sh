@@ -100,10 +100,13 @@ do
   # Trim the read and do the complimentary
   read_R2="$(echo "$chr" | cut -c "${start}-${end}")"
   read_R2_reverse_complemented="$(reverse_complement.sh "$read_R2")"
+  # Generate Quality
+  characters="abcdefghijklmnopqrstuvwz"
+  quality="$(cat /dev/urandom | tr -dc "$characters" | fold -w "$(($length + 1))" | head -n 1)"
   # Print it
   id="@simulated_read_${prefix}:${i}"
-  echo -e "${id}\n${read_R1}\n+\nQuality" >> "$outfile1"
-  echo -e "${id}\n${read_R2_reverse_complemented}\n+\nQuality" >> "$outfile2"
+  echo -e "${id}\n${read_R1}\n+\n${quality}" >> "$outfile1"
+  echo -e "${id}\n${read_R2_reverse_complemented}\n+\n${quality}" >> "$outfile2"
 done
 
 # Compress
