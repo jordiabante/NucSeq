@@ -1,0 +1,29 @@
+Description:
+  Convert a sorted BAM file into a cff file containing the midpoints.
+
+Usage:
+  bam_to_midpoint.sh  [OPTIONS]  -- BAM_FILE
+
+Options:
+  -h--help                Help.
+  -d--outdir              Output directory. Default: $PWD
+
+Examples:
+  bam_to_midpoint.sh -d midpoints -- paired_end.bam 
+
+Dependancies:
+  samtools
+  bedtools
+
+Upstream:
+  bam_sort.sh
+
+Notes:
+  - BAM file needs to be sorted beforehand.
+
+Date:
+  2015/07/22
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com
