@@ -1,1 +1,1 @@
-../src/bam_to_bedgraph/bam_to_cff.sh
+../src/bam_to_cff/bam_to_cff.sh
