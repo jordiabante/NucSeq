@@ -2,7 +2,7 @@ Description:
   Generates a complementary fastq file. 
 
 Usage:
-	simulate_fastq_pair.sh  [OPTIONS]  -- FASTQ_FILE
+  simulate_fastq_pair.sh  [OPTIONS]  -- FASTQ_FILE
 
 Options:
   -h|--help           Help message.

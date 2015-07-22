@@ -2,7 +2,7 @@ Description:
   Generates a random DNA or RNA sequence. 
 
 Usage:
-	random_sequence_generator.sh  [OPTIONS]
+  random_sequence_generator.sh  [OPTIONS]
 
 Options:
   -h|--help           Help message.

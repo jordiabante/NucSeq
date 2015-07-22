@@ -2,7 +2,7 @@ Description:
   Computes the fragment length distribution.
 
 Usage:
-	bedgraph_fragment_length.sh  [OPTIONS]  -- BEDGRAPHFILE
+  bedgraph_fragment_length.sh  [OPTIONS]  -- BEDGRAPHFILE
 
 Options:
   -h|--help           Help

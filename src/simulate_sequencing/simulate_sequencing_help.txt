@@ -2,7 +2,7 @@ Description:
   Simulates the sequencing reads from a FASTA file.
 
 Usage:
-	simulate_sequencing.sh  [OPTIONS]  -- FASTA_FILE
+  simulate_sequencing.sh  [OPTIONS]  -- FASTA_FILE
 
 Options:
   -h|--help           Help message.

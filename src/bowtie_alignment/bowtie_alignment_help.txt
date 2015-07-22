@@ -18,7 +18,7 @@ Examples:
   simulated_read_test_bowtie_alignment_R2.fastq.gz               
 
 Upstream:
-	bowtie_index_generation.sh
+  bowtie_index_generation.sh
 
 Dependancies:
   bowtie2

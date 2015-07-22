@@ -2,7 +2,7 @@ Description:
   Generates a random genome. 
 
 Usage:
-	simulate_genome.sh  [OPTIONS]
+  simulate_genome.sh  [OPTIONS]
 
 Options:
   -h|--help           Help message.

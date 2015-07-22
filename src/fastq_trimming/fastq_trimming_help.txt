@@ -2,7 +2,7 @@ Description:
   Trim reads in a FASTQ file.
 
 Usage:
-	fastq_trimming.sh  [OPTIONS]  -- FASTQ_FILE
+  fastq_trimming.sh  [OPTIONS]  -- FASTQ_FILE
 
 Options:
   -h|--help           Help
