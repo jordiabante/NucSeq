@@ -101,7 +101,7 @@ do
   read_R2="$(echo "$chr" | cut -c "${start}-${end}")"
   read_R2_reverse_complemented="$(reverse_complement.sh "$read_R2")"
   # Generate Quality
-  characters="abcdefghijklmnopqrstuvwz"
+  characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   quality="$(cat /dev/urandom | tr -dc "$characters" | fold -w "$(($length + 1))" | head -n 1)"
   # Print it
   id="@simulated_read_${prefix}:${i}"
