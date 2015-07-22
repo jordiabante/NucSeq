@@ -48,20 +48,20 @@ do
 done
 
 # Read input file
-bamInput="$1"
-bamName="$(basename "$bamInput")"
-bamDir="$(dirname "$bamInput")"
+bam_file="$1"
+bamName="$(basename "$bam_file")"
+bamDir="$(dirname "$bam_file")"
 
 # bedGraph output
 bamPrefix="${bamName%%.*}"
-outfile="${outdir}/${bamPrefix}.bedGraph.gz"
+outfile="${outdir}/${bamPrefix}.bedgraph.gz"
 
 # Outdir
 mkdir -p "$outdir"
 
 # Run
-samtools view "$bamInput" | \
-  awk 'BEGIN{FS="\t";OFS="\t"} !/^@/ {if($8>$4){print $3,$4,$6+$8,1}}' |\
-  sort -k 1,1 -k 2,2n -k 3,3n | \
-  groupby -g 1,2,3 -c 4 -o sum | \
-  gzip > "$outfile"
+bedtools bamtobed -bedpe -i "$bam_file" \
+  | awk 'BEGIN{FS="\t";OFS="\t"}{print $1,$2,$6,1}' \
+  | sort -k 1,1 -k 2,2n -k 3,3n \
+  | groupby -g 1,2,3 -c 4 -o sum \
+  | gzip > "$outfile"
