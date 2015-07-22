@@ -70,7 +70,7 @@ read1="$2"
 read2="$3"
 
 # Find lcp between reads
-prefix="$(printf "%s\n" "$(basename "$read1")" "$(basename "$read2")" | sed -e 'N;s/^\(.*\).*\n\1.*$/\1/')"
+prefix="${read1%_*}"
 
 # Get rid of file extension for the reference
 reference="${reference%.*}"
@@ -88,6 +88,6 @@ bowtie2 --local --qc-filter -q \
   -p "$threads" \
   -x "$reference" \
   -1 <(zcat "$read1") -2 <(zcat "$read2") 2>"$logfile" \
-  | samtools view -Shf 0x2 - \
+  | samtools view -Shf 0x2 - 2>>"$logfile" \
   | grep -v "XS:i:" \
-  | samtools view -Sb - > "$outfile" 
+  | samtools view -@ "$threads" -Sb - > "$outfile" 2>>"$logfile"
