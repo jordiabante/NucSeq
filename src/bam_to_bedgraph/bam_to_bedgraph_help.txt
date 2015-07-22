@@ -6,7 +6,7 @@ Usage:
 
 Options:
   -h--help                Help.
-  -o--outdir              Output directory. Default: $PWD
+  -d--outdir              Output directory. Default: $PWD
 
 Examples:
   bam_to_bedgraph.sh -d bedgraph -- paired_end.bam 
