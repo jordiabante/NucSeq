@@ -70,10 +70,12 @@ read1="$2"
 read2="$3"
 
 # Find lcp between reads
-prefix="${read1%_*}"
+read_name="$(basename "$read1")"
+prefix="${read_name%_*}"
 
 # Get rid of file extension for the reference
-reference="${reference%.*}"
+reference_name="$(basename "$reference")"
+reference="${reference_name%.*}"
 
 # Create output directory if it doesn't already exist
 mkdir -p "$outdir"

@@ -42,7 +42,8 @@ done
 
 # Read input
 reference="$1"
-prefix="${reference%.*}"
+reference_name="$(basename "$reference")"
+prefix="${reference_name%.*}"
 
 # Checks BOWTIE2_INDEXES existance
 if [ "$BOWTIE2_INDEXES" ];
