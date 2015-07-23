@@ -6,7 +6,7 @@ Usage:
 
 Options:
   -h--help                Help.
-  -o--outdir              Output directory. Default: $PWD
+  -d--outdir              Output directory. Default: $PWD
 
 Examples:
   bam_sort.sh -t 16 -m 100M -- paired_end.bam 

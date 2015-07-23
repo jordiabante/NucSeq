@@ -53,7 +53,8 @@ done
 
 # Inputs
 bedgraph_file="$1"
-prefix="${bedgraph_file%%.*}"
+bedgraph_name="$(basename "$bedgraph_file")"
+prefix="${bedgraph_name%%.*}"
 
 # Outputs
 mkdir -p "$outdir"

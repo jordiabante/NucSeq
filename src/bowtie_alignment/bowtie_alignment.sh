@@ -12,7 +12,7 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-TEMP=$(getopt -o hd:m:x:i: -l help,outdir:,mismatches:,max_fragment_length:,min_fragment_length: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:t:m:x:i: -l help,outdir:,threads:,mismatches:,max_fragment_length:,min_fragment_length: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ]
 then
@@ -39,6 +39,10 @@ do
       ;;
     -d|--outdir)	
       outdir="$2"
+      shift 2
+      ;;
+    -t|--threads)	
+      threads="$2"
       shift 2
       ;;
     -m|--mismatches)	

@@ -63,5 +63,5 @@ mkdir -p "$outdir"
 bedtools bamtobed -bedpe -i "$bam_file" \
   | awk 'BEGIN{FS="\t";OFS="\t"}{print $1,$2,$6,1}' \
   | sort -k 1,1 -k 2,2n -k 3,3n \
-  | groupby -g 1,2,3 -c 4 -o sum \
+  | groupBy -g 1,2,3 -c 4 -o sum \
   | gzip > "$outfile"

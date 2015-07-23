@@ -12,7 +12,7 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-TEMP=$(getopt -o ho:t:m: -l help,outdir:,threads:,maxMemory: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:t:m: -l help,outdir:,threads:,maxMemory: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ]
 then
@@ -34,7 +34,7 @@ do
       cat "$script_absdir/${script_name}_help.txt"
       exit
       ;;
-    -o|--outdir)			
+    -d|--outdir)			
       outdir="$2"
       shift 2
       ;;
