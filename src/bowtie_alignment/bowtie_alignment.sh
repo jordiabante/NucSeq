@@ -87,13 +87,13 @@ outfile="${outdir}/${prefix}.bam"
 logfile="${outdir}/${prefix}.log"
 
 # Run unique alignment
-bowtie2 --local --qc-filter -q \
+bowtie2 --local --no-unal --no-mixed --no-discordant --qc-filter -q \
   -I "$min_fragment_length" \
   -X "$max_fragment_length" \
   -N "$mismatches" \
   -p "$threads" \
   -x "$reference" \
   -1 <(zcat "$read1") -2 <(zcat "$read2") 2>"$logfile" \
-  | samtools view -Shf 0x2 - 2>>"$logfile" \
+  | samtools view -Sh - 2>>"$logfile" \
   | grep -v "XS:i:" \
-  | samtools view -@ "$threads" -Sb - > "$outfile" 2>>"$logfile"
+  | samtools view -Sb -@ "$threads" - > "$outfile" 2>>"$logfile"
