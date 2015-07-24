@@ -1,1 +1,0 @@
-../src/random_sequence_generator/random_sequence_generator.sh

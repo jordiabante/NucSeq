@@ -1,1 +1,0 @@
-../src/simulate_fastq_pair/simulate_fastq_pair.sh

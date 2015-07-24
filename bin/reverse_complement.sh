@@ -1,1 +1,0 @@
-../src/reverse_complement/reverse_complement.sh

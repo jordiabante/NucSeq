@@ -1,1 +1,0 @@
-../src/simulate_sequencing/simulate_sequencing.sh
