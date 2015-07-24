@@ -82,5 +82,5 @@ bedtools bamtobed -bedpe -i "$bam_fixed" \
   | gzip > "$outfile"
 
 # 5.Remove intermediate files
-rm -f "${bam_sorted}.bam"
-rm -f "$bam_fixed"
+#rm -f "${bam_sorted}.bam"
+#rm -f "$bam_fixed"
