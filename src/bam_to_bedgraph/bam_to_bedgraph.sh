@@ -53,14 +53,23 @@ bamName="$(basename "$bam_file")"
 bamDir="$(dirname "$bam_file")"
 
 # bedGraph output
-bamPrefix="${bamName%%.*}"
-outfile="${outdir}/${bamPrefix}.bedgraph.gz"
+prefix="${bamName%%.*}"
+outfile="${outdir}/${prefix}.bedgraph.gz"
 
 # Outdir
 mkdir -p "$outdir"
 
 # Run
-bedtools bamtobed -bedpe -i "$bam_file" \
+# 1.Sort by read name
+bam_sorted="${outdir}/${prefix}.sorted"
+samtools sort -n "$bam_file" "$bam_sorted"
+
+# 2.Update/fix SAM flags
+bam_fixed="${outdir}/${prefix}.fixed.bam"
+samtools fixmate "${bam_sorted}.bam" "$bam_fixed"
+
+# 4.Convert to bedgraph
+samtools view -bf 0x2 "$bam_fixed" | bedtools bamtobed -bedpe -i stdin \
   | awk 'BEGIN{FS="\t";OFS="\t"}{print $1,$2,$6,1}' \
   | sort -k 1,1 -k 2,2n -k 3,3n \
   | groupBy -g 1,2,3 -c 4 -o sum \
