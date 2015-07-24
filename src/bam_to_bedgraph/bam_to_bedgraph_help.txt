@@ -7,22 +7,20 @@ Usage:
 Options:
   -h--help                Help.
   -d--outdir              Output directory. Default: $PWD
+  -t--threads             Number of threads used. Default: 2
 
 Examples:
-  bam_to_bedgraph.sh -d bedgraph -- paired_end.bam 
+  bam_to_bedgraph.sh -t 8 -d bedgraph -- paired_end.bam 
 
 Dependancies:
   samtools
   bedtools
 
 Upstream:
-  bam_sort.sh
-
-Notes:
-  - BAM file needs to be sorted beforehand.
+  bowtie_alignment.sh
 
 Date:
-  2015/07/09
+  2015/07/23
 
 Author:
   Jordi Abante <abante.jordi@gmail.com>

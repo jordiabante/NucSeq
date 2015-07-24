@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 set -x
-../bam_to_bedgraph.sh -d out -- input.bam 
+../bam_to_bedgraph.sh -t 2 -d out -- input.bam 
 

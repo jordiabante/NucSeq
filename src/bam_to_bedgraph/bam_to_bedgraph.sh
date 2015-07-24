@@ -12,7 +12,7 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-TEMP=$(getopt -o hd: -l help,outdir: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:t: -l help,outdir:,threads: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ]
 then
@@ -23,8 +23,10 @@ fi
 eval set -- "$TEMP"
 
 # Defaults
+threads=1
 outdir="$PWD"
 
+# Options
 while true
 do
   case "$1" in
@@ -34,6 +36,10 @@ do
       ;;
     -d|--outdir)			
       outdir="$2"
+      shift 2
+      ;;
+    -t|--threads)			
+      threads="$2"
       shift 2
       ;;
     --)
@@ -62,7 +68,7 @@ mkdir -p "$outdir"
 # Run
 # 1.Sort by read name
 bam_sorted="${outdir}/${prefix}.sorted"
-samtools sort -n "$bam_file" "$bam_sorted"
+samtools sort -@ "$threads" -n "$bam_file" "$bam_sorted"
 
 # 2.Update/fix SAM flags
 bam_fixed="${outdir}/${prefix}.fixed.bam"
@@ -74,3 +80,7 @@ samtools view -bf 0x2 "$bam_fixed" | bedtools bamtobed -bedpe -i stdin \
   | sort -k 1,1 -k 2,2n -k 3,3n \
   | groupBy -g 1,2,3 -c 4 -o sum \
   | gzip > "$outfile"
+
+# 5.Remove intermediate files
+rm -f "${bam_sorted}.bam"
+rm -f "$bam_fixed"
