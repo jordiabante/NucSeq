@@ -6,8 +6,8 @@ abspath_script="$(readlink -f -e "$0")"
 script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
-if [ $# -eq 0 ]
-    then
+if [ $# -eq 0 ];
+then
         cat "$script_absdir/${script_name}_help.txt"
         exit 1
 fi
@@ -75,7 +75,7 @@ bam_fixed="${outdir}/${prefix}.fixed.bam"
 samtools fixmate "${bam_sorted}.bam" "$bam_fixed"
 
 # 4.Convert to bedgraph
-samtools view -bf 0x2 "$bam_fixed" | bedtools bamtobed -bedpe -i stdin \
+bedtools bamtobed -bedpe -i "$bam_fixed" \
   | awk 'BEGIN{FS="\t";OFS="\t"}{print $1,$2,$6,1}' \
   | sort -k 1,1 -k 2,2n -k 3,3n \
   | groupBy -g 1,2,3 -c 4 -o sum \
