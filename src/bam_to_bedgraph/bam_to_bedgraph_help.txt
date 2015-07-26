@@ -16,6 +16,9 @@ Dependancies:
   samtools
   bedtools
 
+Notes:
+  - Reads with low quality will not be reported in the output file.s
+
 Upstream:
   bowtie_alignment.sh
 

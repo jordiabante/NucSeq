@@ -74,7 +74,7 @@ samtools sort -@ "$threads" -n "$bam_file" "$bam_sorted"
 bam_fixed="${outdir}/${prefix}.fixed.bam"
 samtools fixmate "${bam_sorted}.bam" "$bam_fixed"
 
-# 4.Convert to bedgraph
+# 3.Convert to bedgraph
 bedtools bamtobed -bedpe -i "$bam_fixed" \
   | awk 'BEGIN{FS="\t";OFS="\t"}{print $1,$2,$6,1}' \
   | sort -k 1,1 -k 2,2n -k 3,3n \
