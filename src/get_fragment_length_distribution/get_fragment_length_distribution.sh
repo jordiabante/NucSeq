@@ -11,7 +11,7 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-TEMP=$(getopt -o hd:k -l help,outdir:,keep -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd: -l help,outdir: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -36,10 +36,6 @@ do
       outdir="$2"
       shift 2
       ;;  
-    -k|--keep)
-      keep=x
-      shift 
-      ;;  
     --) 
       shift
       break
@@ -52,31 +48,41 @@ do
 done
 
 # Inputs
-bedgraph_file="$1"
-bedgraph_name="$(basename "$bedgraph_file")"
-prefix="${bedgraph_name%%.*}"
+input="$1"
+extension="${input#*.}"
+if [ "$extension" == "txt" ]
+then
+    txt_file="$input"
+    txt_name="$(basename "$txt_file")"
+    prefix="${txt_name%%.*}"
+    # Outputs
+    mkdir -p "$outdir"
+    outfile_pdf="${outdir}/${prefix}.pdf"
+    outfile_txt="$txt_file"
+else
+    bedgraph_file="$input"
+    bedgraph_name="$(basename "$bedgraph_file")"
+    prefix="${bedgraph_name%%.*}"
+    # Outputs
+    mkdir -p "$outdir"
+    outfile_pdf="${outdir}/${prefix}.pdf"
+    outfile_txt="${outdir}/${prefix}.txt"
+fi
 
-# Outputs
-mkdir -p "$outdir"
-outfile_pdf="${outdir}/${prefix}.pdf"
-outfile_txt="${outdir}/${prefix}.txt"
 
-# Get total number of reads
-total="$(zcat -f "$bedgraph_file" | awk 'BEGIN{FS="\t"}{total+=$4}END{print total}')"
+if [ ! "$extension" == "txt" ]
+then
+    # Get total number of reads
+    total="$(zcat -f "$bedgraph_file" | awk 'BEGIN{FS="\t"}{total+=$4}END{print total}')"
 
-# Command
-zcat -f "$bedgraph_file" \
-  | awk 'BEGIN{FS="\t";OFS="\t"}{print $3-$2,$4}' \
-  | sort -k 1,1n \
-  | groupBy -g 1 -c 2 -o sum \
-  | awk -v total="$total" 'BEGIN{FS="\t";OFS="\t";i=1}{if(i<=500){while(i!=$1){print i,0;i++}print i,$2/total;i++}}' > "$outfile_txt"
+    # Command
+    zcat -f "$bedgraph_file" \
+    | awk 'BEGIN{FS="\t";OFS="\t"}{print $3-$2,$4}' \
+    | sort -k 1,1n \
+    | groupBy -g 1 -c 2 -o sum \
+    | awk -v total="$total" 'BEGIN{FS="\t";OFS="\t";i=1}{if(i<=500){while(i!=$1){print i,0;i++}print i,$2/total;i++}}' > "$outfile_txt"
+fi
 
 # Plot the distribution
 Rscript "${script_absdir}/R/${script_name}.R" "$outfile_txt" "$outfile_pdf"  &>/dev/null
 rm -f "Rplots.pdf"
-
-# Remove the txt file if required
-if [ ! "$keep" ]
-then
-  rm -f "$outfile_txt"
-fi
