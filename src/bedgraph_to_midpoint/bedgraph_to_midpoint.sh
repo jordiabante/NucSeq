@@ -64,6 +64,6 @@ zcat -f "$bedgraph_file" \
   | awk 'function mid(st,end){if((st+end)%2!=0){x=(st+end+1)/2}else{x=(st+end)/2}fi;return x} \
   BEGIN{FS="\t";OFS="\t"}{print $1,mid($2,$3),$4}' \
   | sort -k 1,1 -k 2,2n \
-  | groupby -g 1,2 -c 3 -o sum \
+  | groupBy -g 1,2 -c 3 -o sum \
   | gzip > "$outfile"
 
