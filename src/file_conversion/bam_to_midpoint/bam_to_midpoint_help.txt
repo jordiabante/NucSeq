@@ -1,0 +1,29 @@
+Description:
+    Converts a BAM file into a cff file containing the midpoints.
+
+Usage:
+    bam_to_midpoint.sh  [OPTIONS]  -- BAM_FILE
+
+Options:
+    -h--help                Help.
+    -d--outdir              Output directory. Default: $PWD
+
+Examples:
+    bam_to_midpoint.sh -d midpoints -- paired_end.bam 
+
+Dependancies:
+    samtools
+    bedtools
+
+Notes:
+    - Reads with low quality will not be reported in the output file.s
+
+Upstream:
+    bowtie_alignment.sh
+
+Date:
+    2015/07/22
+
+Author:
+    Jordi Abante <abante.jordi@gmail.com>
+    https://jordiabante.wordpress.com

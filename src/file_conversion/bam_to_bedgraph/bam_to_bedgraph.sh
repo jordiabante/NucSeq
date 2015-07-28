@@ -55,11 +55,10 @@ done
 
 # Read input file
 bam_file="$1"
-bamName="$(basename "$bam_file")"
-bamDir="$(dirname "$bam_file")"
+bam_name="$(basename "$bam_file")"
 
 # bedGraph output
-prefix="${bamName%%.*}"
+prefix="${bam_name%%.*}"
 outfile="${outdir}/${prefix}.bedgraph.gz"
 
 # Outdir
@@ -82,5 +81,5 @@ bedtools bamtobed -bedpe -i "$bam_fixed" \
   | gzip > "$outfile"
 
 # 5.Remove intermediate files
-#rm -f "${bam_sorted}.bam"
-#rm -f "$bam_fixed"
+rm -f "${bam_sorted}.bam"
+rm -f "$bam_fixed"

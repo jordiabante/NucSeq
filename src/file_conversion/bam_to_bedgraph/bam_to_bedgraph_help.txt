@@ -1,0 +1,30 @@
+Description:
+    Convert a sorted BAM file into a compressed bedGraph file.
+
+Usage:
+    bam_to_bedgraph.sh  [OPTIONS]  -- BAM_FILE
+
+Options:
+    -h--help                Help.
+    -d--outdir              Output directory. Default: $PWD
+    -t--threads             Number of threads used. Default: 2
+
+Examples:
+    bam_to_bedgraph.sh -t 8 -d bedgraph -- paired_end.bam 
+
+Dependancies:
+    samtools
+    bedtools
+
+Notes:
+    - Reads with low quality will not be reported in the output file.s
+
+Upstream:
+    bowtie_alignment.sh
+
+Date:
+    2015/07/23
+
+Author:
+    Jordi Abante <abante.jordi@gmail.com>
+    https://jordiabante.wordpress.com

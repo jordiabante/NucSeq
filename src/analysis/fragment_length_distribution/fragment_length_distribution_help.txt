@@ -2,15 +2,15 @@ Description:
   Computes fragment length distribution and plots it.
 
 Usage:
-  get_fragment_length_distribution.sh  [options]  -- BEDGRAPH_FILE/TXT_FILE
+  fragment_length_distribution.sh  [options]  -- BEDGRAPH_FILE/TXT_FILE
 
 Options:
   -h|--help           Help
   -d|--outdir         Output directory
          
 Examples:
-  get_fragment_length_distribution.sh -d fragment_length_distribution -- r1s1.bedGraph.gz 
-  get_fragment_length_distribution.sh r1s1.txt
+  fragment_length_distribution.sh -d fragment_length_distribution -- r1s1.bedGraph.gz 
+  fragment_length_distribution.sh r1s1.txt
 
 Dependancies:
   bedtools
