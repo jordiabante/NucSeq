@@ -1,1 +1,1 @@
-../src/bam_to_midpoint/bam_to_midpoint.sh
+../src/file_conversion/bam_to_midpoint/bam_to_midpoint.sh

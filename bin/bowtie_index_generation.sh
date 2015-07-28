@@ -1,1 +1,1 @@
-../src/bowtie_index_generation/bowtie_index_generation.sh
+../src/alignment/bowtie_index_generation/bowtie_index_generation.sh

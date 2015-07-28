@@ -1,1 +1,1 @@
-../src/fastq_trimming/fastq_trimming.sh
+../src/preprocess/fastq_trimming/fastq_trimming.sh

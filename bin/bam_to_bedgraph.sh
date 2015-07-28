@@ -1,1 +1,1 @@
-../src/bam_to_bedgraph/bam_to_bedgraph.sh
+../src/file_conversion/bam_to_bedgraph/bam_to_bedgraph.sh
