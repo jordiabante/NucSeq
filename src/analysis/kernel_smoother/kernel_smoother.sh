@@ -69,7 +69,7 @@ input="$1"
 input_basename="$(basename "$input")"
 prefix="${input_basename%%.*}"
 extension="${input_basename#*.}"
-outfile="${outdir}/${prefix}_${kernel}_${bandwidth}.${extension}"
+outfile="${outdir}/${prefix}_${kernel}${bandwidth}.${extension}"
 logfile="${prefix}.log"
 
 # Output directory
