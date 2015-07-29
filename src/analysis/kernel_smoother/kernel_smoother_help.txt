@@ -20,8 +20,8 @@ Dependancies:
     bedtools
 
 Upstream:
-    bam_to_midpoints
-    bedgraph_to_midpoints
+    bam_to_midpoints.sh
+    bedgraph_to_midpoints.sh
 
 Date:
     2015/07/28
