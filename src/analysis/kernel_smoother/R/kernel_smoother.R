@@ -1,7 +1,6 @@
 # Libraries
 try(library(KernSmooth), silent=TRUE)
 try(library(doParallel), silent=TRUE)
-try(library(foreach), silent=TRUE)
 
 # IO files
 args=commandArgs(trailingOnly = TRUE)
