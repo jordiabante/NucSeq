@@ -11,7 +11,7 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-TEMP=$(getopt -o hd:k:b: -l help,outdir:,kernel:,bandwidth: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:t:k:b: -l help,outdir:,threads:,kernel:,bandwidth: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -25,6 +25,7 @@ eval set -- "$TEMP"
 outdir="$PWD"
 kernel="normal"
 bandwidth="75"
+threads=2
 
 # Options
 while true
@@ -36,6 +37,10 @@ do
       ;;  
     -d|--outdir)
       outdir="$2"
+      shift 2
+      ;;  
+    -t|--threads)
+      threads="$2"
       shift 2
       ;;  
     -k|--kernel)
@@ -72,7 +77,7 @@ mkdir -p "$outdir"
 
 # R script
 Rscript "${script_absdir}/R/${script_name}.R"\
-    "$input" "$kernel" "$bandwidth" 2>>/dev/null\
+    "$input" "$kernel" "$bandwidth" "$threads" 2>>/dev/null\
     | sort -k 1,1 -k 2,2n \
     | groupBy -g 1,2 -c 3 -o sum \
     | gzip > "$outfile"

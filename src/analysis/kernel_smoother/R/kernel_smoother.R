@@ -1,12 +1,15 @@
 # Libraries
 try(library(KernSmooth), silent=TRUE)
+try(library(doParallel), silent=TRUE)
+try(library(foreach), silent=TRUE)
 
 # IO files
-args <- commandArgs(trailingOnly = TRUE)
+args=commandArgs(trailingOnly = TRUE)
 input=args[1]
 kernel_type=args[2]
 bandwidth=args[3]
 gridsize=4*as.numeric(bandwidth)+1
+threads=args[4]
 
 # Read in the file
 counts=read.table(input)
@@ -15,6 +18,9 @@ colnames(counts)=c("chr","pos","raw_counts")
 # Initialize output
 output=as.data.frame(matrix(ncol=3))
 colnames(output)=c("chr","pos","score")
+
+# Prepare for the parallel processing
+registerDoParallel(cores=threads)
 
 # For each chromosome
 nchr=nlevels(counts$chr) # Number of chromosomes
@@ -34,7 +40,7 @@ for(chr in 1:nchr){
     extended=data.frame(cbind(extended_pos,extended_smooth))
     colnames(extended)=c("pos","smooth")
     # For every midpoint
-    for(midpoint in 1:nrow(compact)){
+    parallel_out<-foreach(midpoint=1:nrow(compact),.combine=rbind) %dopar% {
         # Get center
         center=compact$pos[midpoint]
         nreads=compact$raw_counts[midpoint]
@@ -54,9 +60,11 @@ for(chr in 1:nchr){
         # Join to the rest of data
         new_points=new_points[new_points$pos>0,]
         new_points=new_points[new_points$pos<=max_pos,]
-        output=rbind(output,new_points)
+        new_points
     }
+    output=rbind(output,parallel_out)
 }
+
 # Clean output
 output=data.frame(output[2:nrow(output),])
 # Print output
