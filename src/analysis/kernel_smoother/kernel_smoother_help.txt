@@ -7,16 +7,12 @@ Usage:
 Options:
     -h|--help           Help.
     -d|--outdir         Output directory. Default: $PWD.
-    -t|--threads        Number of threads. Default: 2.
-    -k|--kernel         Type of kernel used: "normal","box","epanech","biweigth","triweight". Default: "normal".
     -b|--bandwidth      Bandwidth of the kernel. Default: 75.
 
 Examples:
-    kernel_smoother.sh -d out -k normal -b 75 -t 8 -- r4s1.cff.gz
+    kernel_smoother.sh -d out -b 75 -- r4s1.cff.gz
 
 Dependancies:
-    R{KernSmooth}
-    R{doParallel}
     bedtools
 
 Upstream:
