@@ -5,13 +5,16 @@ abspath_script="$(readlink -f -e "$0")"
 script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
+# Find cpp script
+kernel_smoother="${script_absdir}/cpp/${script_name}"
+
 if [ $# -eq 0 ]
     then
         cat "$script_absdir/${script_name}_help.txt"
         exit 1
 fi
 
-TEMP=$(getopt -o hd:t:k:b: -l help,outdir:,threads:,kernel:,bandwidth: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:b: -l help,outdir:,bandwidth: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -23,9 +26,7 @@ eval set -- "$TEMP"
 
 # Defaults
 outdir="$PWD"
-kernel="normal"
-bandwidth="75"
-threads=2
+bandwidth=150
 
 # Options
 while true
@@ -37,14 +38,6 @@ do
       ;;  
     -d|--outdir)
       outdir="$2"
-      shift 2
-      ;;  
-    -t|--threads)
-      threads="$2"
-      shift 2
-      ;;  
-    -k|--kernel)
-      kernel="$2"
       shift 2
       ;;  
     -b|--bandwidth)
@@ -69,15 +62,23 @@ input="$1"
 input_basename="$(basename "$input")"
 prefix="${input_basename%%.*}"
 extension="${input_basename#*.}"
-outfile="${outdir}/${prefix}_${kernel}${bandwidth}.${extension}"
-logfile="${prefix}.log"
+outfile="${outdir}/${prefix}_normal_kernel_bw${bandwidth}.${extension}"
+tempfile="${outdir}/${prefix}.tmp"
 
 # Output directory
 mkdir -p "$outdir"
 
-# R script
-Rscript "${script_absdir}/R/${script_name}.R"\
-    "$input" "$kernel" "$bandwidth" "$threads" 2>>/dev/null\
-    | sort -k 1,1 -k 2,2n \
-    | groupBy -g 1,2 -c 3 -o sum \
-    | gzip > "$outfile"
+# Run 
+while read -a line;
+do
+    chr=${line[0]}
+    pos=${line[1]}
+    counts=${line[2]}
+    "$kernel_smoother" "$chr" "$pos" "$counts" "$bandwidth" >> "$tempfile"
+done < <(zcat -f "$input")
+
+# Sort outfile
+cat "$tempfile" | sort -k 1,1 -k 2,2n | groupBy -g 1,2 -c 3 -o sum | gzip >"$outfile"
+
+# Remove temp file
+rm -f "$tempfile"
