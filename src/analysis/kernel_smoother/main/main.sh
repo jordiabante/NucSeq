@@ -2,4 +2,4 @@
 
 rm -rf out
 
-../kernel_smoother.sh -d out -b 2 -- input.cff.gz
+../kernel_smoother.sh -d out -b 5 -- input.cff.gz
