@@ -4,10 +4,10 @@
 #include <cstdlib>
 using namespace std;
  
-void createFilter(double kernel[],int bandwidth,int counts)
+void createFilter(double kernel[],int bandwidth)
 {
-    // set standard deviation to 1.0
-    double sigma = 1.0;
+    // set standard deviation
+    double sigma = (double)bandwidth/10;
     double r;
     double s = 2.0 * sigma * sigma;
  
@@ -15,8 +15,8 @@ void createFilter(double kernel[],int bandwidth,int counts)
     double sum = 0.0;
  
     // generate kernel
-    int lim_inf=0; //-((float)bandwidth)/2;
-    int lim_sup=bandwidth;//((float)bandwidth)/2;
+    int lim_inf=0;
+    int lim_sup=bandwidth;
     int x=0;
     for (int i = lim_inf; i <= lim_sup; i++)
     {
@@ -29,36 +29,21 @@ void createFilter(double kernel[],int bandwidth,int counts)
     for(int i =lim_inf; i <= lim_sup ; i++){
         kernel[i] /= sum;
     }
-    // Scale by the number of reads
-    for(int i =lim_inf; i <= lim_sup ; i++){
-        kernel[i] *= counts;
-    }
  
 }
  
 int main(int argc, char* argv[])
 {
     // Read in arguments
-    char* chr=argv[1];
-    int position=atoi(argv[2]);
-    int counts=atof(argv[3]);
-    int bandwidth=atof(argv[4]);
-    // Set output
-    char* out_chr[bandwidth];
-    int out_pos[bandwidth];
-    for(int i = 0;i <=bandwidth;i++){
-        out_chr[i]=chr;
-        out_pos[i]=i+position-bandwidth/2;
-    }
+    int bandwidth=atof(argv[1]);
     // Initialize kernel grid
     double kernel[bandwidth];
     // Call gaussian filter
-    createFilter(kernel,bandwidth,counts);
+    createFilter(kernel,bandwidth);
     // Print results
     for(int i = 0; i < bandwidth ; ++i)
     {
-        cout << out_chr[i] << "\t" << out_pos[i] << "\t" << kernel[i];
-        cout << endl;
+        std::cout << fixed << showpoint << setprecision(4) << kernel[i] << "\n";
     }
     return 0;
 }

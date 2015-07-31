@@ -68,17 +68,29 @@ tempfile="${outdir}/${prefix}.tmp"
 # Output directory
 mkdir -p "$outdir"
 
-# Run 
+# Generate kernel 
+"$kernel_smoother" "$bandwidth" >> "$tempfile"
+
+# Apply it to the input file
 while read -a line;
 do
+    # Get midpoint information
     chr=${line[0]}
     pos=${line[1]}
     counts=${line[2]}
-    "$kernel_smoother" "$chr" "$pos" "$counts" "$bandwidth" >> "$tempfile"
-done < <(zcat -f "$input")
-
-# Sort outfile
-cat "$tempfile" | sort -k 1,1 -k 2,2n | groupBy -g 1,2 -c 3 -o sum | gzip >"$outfile"
+    i="$(( $pos - $bandwidth/2 ))"
+    # For each point scale the kernel and add it
+    while read line;
+    do  
+        score="$( echo "${line}*${counts}" | bc)"
+        printf "%s\t%s\t%s\n" "${chr}" "${i}" "${score}"
+        (( i++ ))
+    done < "$tempfile"
+done < <(zcat -f "$input")  \
+    | grep -v "\t0$" \
+    | sort -k 1,1 -k 2,2n \
+    | groupBy  -g 1,2 -c 3 -o sum \
+    | gzip > "$outfile"
 
 # Remove temp file
 rm -f "$tempfile"
