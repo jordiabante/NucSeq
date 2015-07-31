@@ -1,1 +1,0 @@
-../src/analysis/kernel_smoother/kernel_smoother.sh
