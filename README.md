@@ -19,8 +19,7 @@ Dependancies
 1. samtools
 2. bedtools
 3. bowtie2
-4. parallel
-5. HTSeq
+4. HTSeq
 
 Usage
 -----------------
