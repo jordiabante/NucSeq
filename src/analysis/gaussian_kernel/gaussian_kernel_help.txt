@@ -7,12 +7,14 @@ Usage:
 Options:
     -h|--help           Help.
     -d|--outdir         Output directory. Default: $PWD.
-    -b|--bandwidth      Bandwidth of the kernel. Default: 75.
+    -t|--threads        Threads used. Default: 2.
+    -b|--bandwidth      Bandwidth of the kernel. Default: 150.
 
 Examples:
     kernel_smoother.sh -d out -b 75 -- r4s1.cff.gz
 
 Dependancies:
+    parallel
     bedtools
 
 Upstream:
@@ -20,7 +22,7 @@ Upstream:
     bedgraph_to_midpoints.sh
 
 Date:
-    2015/07/28
+    2015/07/31
 
 Author:
     Jordi Abante <abante.jordi@gmail.com>
