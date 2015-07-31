@@ -17,9 +17,10 @@ Installation
 Dependancies
 -----------------
 1. samtools
-2. bowtie2
-3. HTSeq
-4. bedtools
+2. bedtools
+3. bowtie2
+4. parallel
+5. HTSeq
 
 Usage
 -----------------
