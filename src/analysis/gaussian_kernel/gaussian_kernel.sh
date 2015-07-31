@@ -5,8 +5,9 @@ abspath_script="$(readlink -f -e "$0")"
 script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
-# Find cpp script
-kernel_smoother="${script_absdir}/cpp/${script_name}"
+# Find other scripts
+gaussian_kernel_cpp="${script_absdir}/cpp/${script_name}"
+gaussian_kernel_perl="${script_absdir}/perl/${script_name}.pl"
 
 if [ $# -eq 0 ]
     then
@@ -83,28 +84,7 @@ export tempfile
 export kernel_file
 export bandwidth
 export outfile
-
-# Function to apply kernel
-function apply_kernel(){
-    chr_file="$1";
-    zcat -f "$chr_file" | while read -a line;
-    do
-        # Get midpoint information
-        chr=${line[0]};
-        pos=${line[1]};
-        counts=${line[2]};
-        i="$(( $pos - $bandwidth/2 ))";
-        cat "$kernel_file" | while read value;
-        do
-            score="$( echo "${value}*${counts}" | bc)";
-            printf "%s\t%s\t%s\n" "${chr}" "${i}" "${score}";
-            (( i++ ));
-        done
-    done
-}
-
-# Export function
-export -f apply_kernel
+export gaussian_kernel_perl
 
 # Get chromosomes
 chromosomes="$(zcat "$input" | cut -f 1 | uniq)"
@@ -114,11 +94,11 @@ echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
     'zcat "$input" | grep {} | gzip > '${tempfile}_{}.tmp.gz''
 
 # Generate kernel 
-"$kernel_smoother" "$bandwidth" >> "$kernel_file"
+"$gaussian_kernel_cpp" "$bandwidth" >> "$kernel_file"
 
 # Apply kernel to all the chromosomes
 echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
-    'apply_kernel ${tempfile}_{}.tmp.gz \
+    '"$gaussian_kernel_perl" "${tempfile}_{}.tmp.gz" "$kernel_file" "$bandwidth" \
     | sort -k 2,2n \
     | groupBy -g 1,2 -c 3 -o sum \
     | gzip > '${tempfile}_{}.done.tmp.gz''
