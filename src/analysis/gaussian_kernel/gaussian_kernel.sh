@@ -107,31 +107,32 @@ function apply_kernel(){
 export -f apply_kernel
 
 # Get chromosomes
-chromosomes="$(parallel -j "$threads" 'zcat {} | cut -f 1 | uniq' ::: "$input")"
+chromosomes="$(zcat "$input" | cut -f 1 | uniq)"
 
-# Parallel: generate a file for each chromosome
-parallel -j "$threads" --env input --env tempfile \
-    'zcat '$input' \
-    | grep "^{}\t" \
-    | gzip > '${tempfile}_{}.tmp.gz'' ::: "$chromosomes"
+# Generate a file for each chromosome
+echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
+    'zcat "$input" | grep {} | gzip > '${tempfile}_{}.tmp.gz''
 
 # Generate kernel 
 "$kernel_smoother" "$bandwidth" >> "$kernel_file"
 
-# Parallel: apply kernel to all the chromosomes
-parallel -j "$threads" --env tempfile --env apply_kernel \
+# Apply kernel to all the chromosomes
+echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
     'apply_kernel ${tempfile}_{}.tmp.gz \
     | sort -k 2,2n \
     | groupBy -g 1,2 -c 3 -o sum \
-    | gzip > '${tempfile}_{}.done.tmp.gz'' ::: "$chromosomes"
+    | gzip > '${tempfile}_{}.done.tmp.gz''
 
-# Parallel: concatenate all chromosomes and filter
+# Concatenate all chromosomes and filter
 chr_files="$(ls ${tempfile}*done*)"
-parallel -j "$threads" --env outfile \
+echo "$chr_files" | xargs -i -n 1 --max-proc "$threads" bash -c \
     'zcat {} \
     | grep -v "\t-" \
     | grep -v "\t0$" \
-    | gzip >> "$outfile"' ::: "$chr_files" 
+    | gzip >> '${tempfile}_all.tmp.gz''
+
+# Sort file
+zcat "${tempfile}_all.tmp.gz" | sort -k 1,1 -k 2,2n | gzip > "$outfile" 
 
 # Remove temp file
 rm -f ${tempfile}*tmp*

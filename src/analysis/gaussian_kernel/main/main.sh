@@ -2,4 +2,4 @@
 
 rm -rf out
 
-../gaussian_kernel.sh -t 4 -d out -b 150 -- input.cff.gz
+../gaussian_kernel_xargs.sh -t 4 -d out -b 150 -- input.cff.gz
