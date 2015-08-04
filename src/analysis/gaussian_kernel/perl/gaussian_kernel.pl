@@ -24,7 +24,9 @@ while ($chr_fh->gzreadline($_) > 0) {
     while (my $kernel_value = <$kernel_fh>) {
         chomp $kernel_value;
         my $score= $counts * $kernel_value;
-        print "$chr\t$i\t$score\n";
+        if (($i>=1)&&($score>0)){
+            print "$chr\t$i\t$score\n";
+        }
         $i++;
     }
 }

@@ -104,15 +104,7 @@ echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
     | gzip > '${tempfile}_{}.done.tmp.gz''
 
 # Concatenate all chromosomes and filter
-chr_files="$(ls ${tempfile}*done*)"
-echo "$chr_files" | xargs -i -n 1 --max-proc "$threads" bash -c \
-    'zcat {} \
-    | grep -v "\t-" \
-    | grep -v "\t0$" \
-    | gzip >> '${tempfile}_all.tmp.gz''
-
-# Sort file
-zcat "${tempfile}_all.tmp.gz" | sort -k 1,1 -k 2,2n | gzip > "$outfile" 
+zcat ${tempfile}_*.done.tmp.gz | sort -k 1,1 -k 2,2n | gzip > "$outfile" 
 
 # Remove temp file
 rm -f ${tempfile}*tmp*
