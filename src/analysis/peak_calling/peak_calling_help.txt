@@ -1,27 +1,25 @@
 Description:
-    Applies a kernel smoother to the input. 
+    Peak caller (detect local maximums).
 
 Usage:
-    gaussian_kernel.sh  [options]  -- CFF_FILE
+    peak_calling.sh  [options]  -- CFF_FILE
 
 Options:
     -h|--help           Help.
     -d|--outdir         Output directory. Default: $PWD.
     -t|--threads        Threads used. Default: 2.
-    -b|--bandwidth      Bandwidth of the kernel. Default: 150.
 
 Examples:
-    gaussian_kernel.sh -d out -b 200 -t 8 -- r4s1.cff.gz
+    peak_calling.sh -d out -t 8 -- r4s1.cff.gz
 
 Dependancies:
     bedtools
 
 Upstream:
-    bam_to_midpoints.sh
-    bedgraph_to_midpoints.sh
+    gaussian_filter.sh
 
 Date:
-    2015/07/31
+    2015/08/05
 
 Author:
     Jordi Abante <abante.jordi@gmail.com>
