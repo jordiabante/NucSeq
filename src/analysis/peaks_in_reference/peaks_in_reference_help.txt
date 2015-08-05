@@ -1,0 +1,26 @@
+Description:
+    Peak caller (detect local maximums).
+
+Usage:
+    peak_calling.sh  [options]  -- CFF_FILE
+
+Options:
+    -h|--help           Help.
+    -d|--outdir         Output directory. Default: $PWD.
+    -t|--threads        Threads used. Default: 2.
+
+Examples:
+    peak_calling.sh -d out -t 8 -- r4s1.cff.gz
+
+Dependancies:
+    bedtools
+
+Upstream:
+    gaussian_filter.sh
+
+Date:
+    2015/08/05
+
+Author:
+    Jordi Abante <abante.jordi@gmail.com>
+    https://jordiabante.wordpress.com
