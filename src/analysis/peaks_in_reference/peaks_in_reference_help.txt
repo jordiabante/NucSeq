@@ -1,8 +1,8 @@
 Description:
-    Peak caller (detect local maximums).
+    Cross a cff file with a reference gff file.
 
 Usage:
-    peak_calling.sh  [options]  -- CFF_FILE
+    peaks_in_reference.sh  [options]  -- CFF_FILE GFF_FILE
 
 Options:
     -h|--help           Help.
@@ -10,13 +10,13 @@ Options:
     -t|--threads        Threads used. Default: 2.
 
 Examples:
-    peak_calling.sh -d out -t 8 -- r4s1.cff.gz
+    peaks_in_reference.sh -d out -t 8 -- r4s1.cff.gz reference.gff
 
 Dependancies:
     bedtools
 
 Upstream:
-    gaussian_filter.sh
+    peak_calling.sh
 
 Date:
     2015/08/05
