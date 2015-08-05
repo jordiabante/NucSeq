@@ -5,9 +5,9 @@ abspath_script="$(readlink -f -e "$0")"
 script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
-# Find other scripts
-gaussian_kernel_cpp="${script_absdir}/cpp/${script_name}"
-gaussian_kernel_perl="${script_absdir}/perl/${script_name}.pl"
+# Find perl scripts
+generate_kernel="${script_absdir}/perl/generate_kernel.pl"
+apply_kernel="${script_absdir}/perl/apply_kernel.pl"
 
 if [ $# -eq 0 ]
     then
@@ -94,11 +94,11 @@ echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
     'zcat "$input" | grep {} | gzip > '${tempfile}_{}.tmp.gz''
 
 # Generate kernel 
-"$gaussian_kernel_cpp" "$bandwidth" >> "$kernel_file"
+"$generate_kernel" "$bandwidth" >> "$kernel_file"
 
 # Apply kernel to all the chromosomes
 echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
-    '"$gaussian_kernel_perl" "${tempfile}_{}.tmp.gz" "$kernel_file" "$bandwidth" \
+    ''$apply_kernel' '${tempfile}_{}.tmp.gz' '$kernel_file' '$bandwidth' \
     | sort -k 2,2n \
     | groupBy -g 1,2 -c 3 -o sum \
     | gzip > '${tempfile}_{}.done.tmp.gz''
