@@ -82,7 +82,7 @@ chromosomes="$(zcat "$input" | cut -f 1 | uniq)"
 
 # Generate a file for each chromosome
 echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
-    'zcat "$input" | grep {} | gzip > '${tempfile}_{}.tmp.gz''
+    'zcat "$input" | grep "{}\t" | gzip > '${tempfile}_{}.tmp.gz''
 
 # Call peaks in all the chromosomes
 echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
