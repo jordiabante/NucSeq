@@ -29,7 +29,7 @@ while (my $feat = <REFERENCE>){
         # Get chr, pos and score
         my ($peak_chr, $peak_pos, $peak_score)=split "\t", $_;
         if (($feat_chr eq $peak_chr) && ($feat_st <= $peak_pos) && ($feat_end >= $peak_pos)){
-            my $score = sprintf '%.3f', "$peak_score";
+            my $score = sprintf '%.4f', "$peak_score";
             print "$peak_chr\t$peak_pos\t$score\t$feat_id\t$feat_st\t$feat_end\t$feat_strand\n";
         }
     }
