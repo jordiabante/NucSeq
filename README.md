@@ -1,3 +1,7 @@
+Workflow
+------------------
+![nucleosome_positioning_pipeline](https://github.com/jordiabante/nucleosome_positioning/blob/master/images/nucleosome_positioning_pipeline.pdf)
+
 Installation
 ------------------
 
