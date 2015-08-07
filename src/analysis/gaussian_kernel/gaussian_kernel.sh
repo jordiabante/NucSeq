@@ -90,14 +90,14 @@ export gaussian_kernel_perl
 chromosomes="$(zcat "$input" | cut -f 1 | uniq)"
 
 # Generate a file for each chromosome
-echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
-    'zcat "$input" | grep "{}\t" | gzip > '${tempfile}_{}.tmp.gz''
+echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
+    'zcat '$input' | grep '{}[[:space:]]' | gzip > '${tempfile}_{}.tmp.gz''
 
 # Generate kernel 
 "$generate_kernel" "$bandwidth" >> "$kernel_file"
 
 # Apply kernel to all the chromosomes
-echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
+echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     ''$apply_kernel' '${tempfile}_{}.tmp.gz' '$kernel_file' '$bandwidth' \
     | sort -k 2,2n \
     | groupBy -g 1,2 -c 3 -o sum \

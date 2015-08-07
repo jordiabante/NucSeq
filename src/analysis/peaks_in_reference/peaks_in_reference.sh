@@ -85,8 +85,8 @@ export perl_script
 chromosomes="$(zcat "$peaks_file" | cut -f 1 | uniq)"
 
 # Generate a file for each chromosome
-echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
-    'zcat "$peaks_file" | grep "{}\t" | gzip > '${tempfile}_{}.tmp.gz''
+echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
+    'zcat '$peaks_file' | grep '{}[[:space:]]' | gzip > '${tempfile}_{}.tmp.gz''
 
 # Call peaks in all the chromosomes
 echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
