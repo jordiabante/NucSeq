@@ -2,7 +2,7 @@ Description:
     Cross a cff file with a reference gff file.
 
 Usage:
-    peaks_in_reference.sh  [options]  -- CFF_FILE GFF_FILE
+    cross_annotation.sh  [options]  -- CFF_FILE GFF_FILE
 
 Options:
     -h|--help           Help.
@@ -10,16 +10,17 @@ Options:
     -t|--threads        Threads used. Default: 2.
 
 Examples:
-    peaks_in_reference.sh -d out -t 8 -- r4s1.cff.gz reference.gff
+    cross_annotation.sh -d out -t 8 -- r4s1.cff.gz reference.gff
 
 Dependancies:
     bedtools
 
 Upstream:
-    peak_calling.sh
+    gaussian_kernel.sh: if the feature to be studied is the distribution.
+    peak_calling.sh: if the feature to be studied are the peaks.
 
 Date:
-    2015/08/05
+    2015/08/08
 
 Author:
     Jordi Abante <abante.jordi@gmail.com>

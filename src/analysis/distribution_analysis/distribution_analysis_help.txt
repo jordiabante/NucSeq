@@ -1,0 +1,24 @@
+Description:
+  Computes fragment length distribution and plots it.
+
+Usage:
+  fragment_length_distribution.sh  [options]  -- BEDGRAPH_FILE/TXT_FILE
+
+Options:
+  -h|--help           Help
+  -d|--outdir         Output directory
+         
+Examples:
+  fragment_length_distribution.sh -d fragment_length_distribution -- r1s1.bedGraph.gz 
+  fragment_length_distribution.sh r1s1.txt
+
+Dependancies:
+  bedtools
+  ggplot2
+
+Date:
+  2015/07/23
+
+Author:
+  Jordi Abante <abante.jordi@gmail.com>
+  https://jordiabante.wordpress.com
