@@ -1,0 +1,27 @@
+Description:
+    Tags nucleosomes and expands them. 
+
+Usage:
+    tag_nucleosomes.sh  [options]  -- CFF_FILE
+
+Options:
+    -h|--help           Help.
+    -d|--outdir         Output directory. Default: $PWD.
+    -t|--threads        Threads used. Default: 2.
+    -b|--bandwidth      Bandwidth of the kernel. Default: 150.
+
+Examples:
+    tag_nucleosomes.sh -d out -b 200 -t 8 -- r4s1.cff.gz
+
+Dependancies:
+    NA
+
+Upstream:
+    peak_calling.sh
+
+Date:
+    2015/08/12
+
+Author:
+    Jordi Abante <abante.jordi@gmail.com>
+    https://jordiabante.wordpress.com
