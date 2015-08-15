@@ -2,4 +2,4 @@
 
 rm -rf out
 
-../tag_nucleosomes.sh -t 4 -d out -b 25 -- input.cff.gz
+../tag_nucleosomes.sh -t 4 -d out -b 21 -- input.cff.gz
