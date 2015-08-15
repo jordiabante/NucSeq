@@ -84,7 +84,6 @@ export tempfile
 export kernel_file
 export bandwidth
 export outfile
-export gaussian_kernel_perl
 
 # Get chromosomes
 chromosomes="$(zcat "$input" | cut -f 1 | uniq)"

@@ -8,7 +8,7 @@ my $scriptname = $0;
 my $bandwidth = @ARGV[0];
 
 # Gaussian pdf
-my $sigma = $bandwidth/10;
+my $sigma = $bandwidth/7.5;
 my $sd = 2 * $sigma * $sigma;
 
 # Other variables
