@@ -34,4 +34,3 @@ Usage
     * `main.sh`: bash script to try the command with toy example.
     * Files required for the toy example.
 
-![stormtroop](https://octodex.github.com/images/stormtroopocat.png)
