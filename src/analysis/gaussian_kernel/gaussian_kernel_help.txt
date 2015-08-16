@@ -20,6 +20,9 @@ Upstream:
     bam_to_midpoints.sh
     bedgraph_to_midpoints.sh
 
+Notes:
+    - A normalization is applied for eahc chromosome using the total number of fragments.
+
 Date:
     2015/07/31
 

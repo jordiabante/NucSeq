@@ -17,7 +17,7 @@ Dependancies:
     bedtools
 
 Notes:
-    - Reads with low quality will not be reported in the output file.s
+    - Unpaired reads (flag=99) will be removed.
 
 Upstream:
     bowtie_alignment.sh
