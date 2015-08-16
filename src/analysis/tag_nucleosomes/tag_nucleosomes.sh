@@ -15,7 +15,7 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-TEMP=$(getopt -o hd:t:b: -l help,outdir:,threads:,bandwidth: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:t:b:c -l help,outdir:,threads:,bandwidth:,collapse -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -50,6 +50,10 @@ do
       bandwidth="$2"
       shift 2
       ;;  
+    -c|--collapse)
+      collapse="x"
+      shift 1
+      ;;  
     --) 
       shift
       break
@@ -72,7 +76,7 @@ input_basename="$(basename "$input")"
 prefix="${input_basename%%.*}"
 tempfile="${outdir}/${prefix}"
 kernel_file="${tempfile}_kernel.tmp"
-outfile="${outdir}/${prefix}_nucleosomes${bandwidth}.cff.gz"
+outfile="${outdir}/${prefix}_tags.cff.gz"
 
 # Output directory
 mkdir -p "$outdir"
@@ -101,8 +105,15 @@ echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     | gzip > '${tempfile}_{}.done.tmp.gz''
 
 # Concatenate all chromosomes and filter
-zcat ${tempfile}_*.done.tmp.gz | gzip > "$outfile" 
-
+if [ "$collapse" ];
+then
+    zcat ${tempfile}_*.done.tmp.gz | \
+        sort -k 1,1 -k 2,2n -k 4,4n |\
+        groupBy -g 1,2 -c 3,4 -o collapse,collapse |\
+        gzip > "$outfile" 
+else
+    zcat ${tempfile}_*.done.tmp.gz | gzip > "$outfile" 
+fi
 # Remove temp file
 rm -f ${tempfile}*tmp*
 

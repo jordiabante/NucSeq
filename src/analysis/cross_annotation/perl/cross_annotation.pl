@@ -27,10 +27,10 @@ while (my $feat = <REFERENCE>){
         # Chomp new line
         chomp $_;
         # Get chr, pos and score
-        my ($peak_chr, $peak_pos, $peak_score)=split "\t", $_;
+        my ($peak_chr, $peak_pos, $peak_score,$nucleosome)=split "\t", $_;
         if (($feat_chr eq $peak_chr) && ($feat_st <= $peak_pos) && ($feat_end >= $peak_pos)){
             my $score = sprintf '%.4f', "$peak_score";
-            print "$peak_chr\t$peak_pos\t$score\t$feat_id\t$feat_st\t$feat_end\t$feat_strand\n";
+            print "$peak_chr\t$peak_pos\t$score\t$nucleosome\t$feat_id\t$feat_st\t$feat_end\t$feat_strand\n";
         }
     }
     # Close the peaks file

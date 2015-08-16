@@ -5,13 +5,16 @@ abspath_script="$(readlink -f -e "$0")"
 script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
+# Find perl scripts
+perl_script="${script_absdir}/perl/${script_name}.pl"
+
 if [ $# -eq 0 ]
     then
         cat "$script_absdir/${script_name}_help.txt"
         exit 1
 fi
 
-TEMP=$(getopt -o hd: -l help,outdir: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:t: -l help,outdir:,threads: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -23,6 +26,7 @@ eval set -- "$TEMP"
 
 # Defaults
 outdir="$PWD"
+threads=2
 
 # Options
 while true
@@ -34,6 +38,10 @@ do
       ;;  
     -d|--outdir)
       outdir="$2"
+      shift 2
+      ;;  
+    -t|--threads)
+      threads="$2"
       shift 2
       ;;  
     --) 
@@ -66,13 +74,16 @@ outfile="${outdir}/${prefix}_distribution_analysis.txt"
 # Output directory
 mkdir -p "$outdir"
 
+# Export variables
+export tempfile
+export outfile
+export perl_script
+
 # Merge samples
 merge.sh -tn -p "$tempfile" -- "$input1" "$input2" &>/dev/null || \
     (echo "Please, clone myutils repository and add it to your PATH variable" && exit 0)
 
-# R command
-Rscript "${script_absdir}/R/${script_name}.R" "${tempfile}.txt.gz" "$outfile" &>/dev/null
-
+exit 0
 # Remove temp files
 rm -f "${tempfile}.txt.gz"
 
@@ -80,3 +91,5 @@ rm -f "${tempfile}.txt.gz"
 end_time="$(date +"%s%3N")"
 echo "Time elapsed: $(( $end_time - $start_time )) ms"
 
+# R command
+#Rscript "${script_absdir}/R/${script_name}.R" "${tempfile}.txt.gz" "$outfile" &>/dev/null

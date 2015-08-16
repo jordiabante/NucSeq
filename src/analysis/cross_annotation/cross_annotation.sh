@@ -88,8 +88,8 @@ chromosomes="$(zcat "$peaks_file" | cut -f 1 | uniq)"
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     'zcat '$peaks_file' | grep '{}[[:space:]]' | gzip > '${tempfile}_{}.tmp.gz''
 
-# Call peaks in all the chromosomes
-echo "$chromosomes" | xargs -i -n 1 --max-proc "$threads" bash -c \
+# Cross input with reference for all the chromosomes
+echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     ''$perl_script' '${tempfile}_{}.tmp.gz' '${reference_file}'\
     | gzip > '${tempfile}_{}.done.tmp.gz''
 
