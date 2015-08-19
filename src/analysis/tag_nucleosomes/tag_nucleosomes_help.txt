@@ -2,22 +2,21 @@ Description:
     Tags nucleosomes and expands them. 
 
 Usage:
-    tag_nucleosomes.sh  [options]  -- CFF_FILE
+    tag_nucleosomes.sh  [options]  -- PEAKS_FILE SMOOTH_FILE
 
 Options:
     -h|--help           Help.
     -d|--outdir         Output directory. Default: $PWD.
     -t|--threads        Threads used. Default: 2.
-    -b|--bandwidth      Bandwidth of the kernel. Default: 150.
-    -c|--collapse       Collapse overlapping nucleosomes.
 
 Examples:
-    tag_nucleosomes.sh -d out -b 200 -t 8 -- r4s1.cff.gz
+    tag_nucleosomes.sh -d out -t 8 -- r4s1_peaks.cff.gz r4s1_smooth.cff.gz
 
 Dependancies:
     NA
 
 Upstream:
+    gaussian_kernel.sh
     peak_calling.sh
 
 Date:

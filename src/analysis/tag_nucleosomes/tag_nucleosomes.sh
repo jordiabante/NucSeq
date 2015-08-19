@@ -6,8 +6,7 @@ script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
 # Find perl scripts
-generate_kernel="${script_absdir}/perl/generate_kernel.pl"
-apply_kernel="${script_absdir}/perl/apply_kernel.pl"
+tag_nucleosomes="${script_absdir}/perl/${script_name}.pl"
 
 if [ $# -eq 0 ]
     then
@@ -15,7 +14,7 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-TEMP=$(getopt -o hd:t:b:c -l help,outdir:,threads:,bandwidth:,collapse -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:t: -l help,outdir:,threads: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -27,7 +26,6 @@ eval set -- "$TEMP"
 
 # Defaults
 outdir="$PWD"
-bandwidth=150
 threads=2
 
 # Options
@@ -46,14 +44,6 @@ do
       threads="$2"
       shift 2
       ;;  
-    -b|--bandwidth)
-      bandwidth="$2"
-      shift 2
-      ;;  
-    -c|--collapse)
-      collapse="x"
-      shift 1
-      ;;  
     --) 
       shift
       break
@@ -69,53 +59,51 @@ done
 start_time="$(date +"%s%3N")"
 
 # Inputs
-input="$1"
+peak_file="$1"
+smooth_file="$2"
 
 # Output
-input_basename="$(basename "$input")"
-prefix="${input_basename%%.*}"
-tempfile="${outdir}/${prefix}"
-kernel_file="${tempfile}_kernel.tmp"
-outfile="${outdir}/${prefix}_tags.cff.gz"
+peak_file_basename="$(basename "$peak_file")"
+peak_prefix="${peak_file_basename%%.*}"
+peak_temp="${outdir}/${peak_prefix}"
+smooth_file_basename="$(basename "$smooth_file")"
+smooth_prefix="${smooth_file_basename%%.*}"
+smooth_temp="${outdir}/${smooth_prefix}"
+kernel_file="${peak_temp}_kernel.tmp"
+outfile="${outdir}/${peak_prefix}_tags.cff.gz"
 
 # Output directory
 mkdir -p "$outdir"
 
 # Export variables
-export input
-export tempfile
+export peak_file
+export smooth_file
+export peak_temp
+export smooth_temp
 export outfile
-export kernel_file
-export apply_kernel
-export bandwidth
+export tag_nucleosomes
 
 # Get chromosomes
-chromosomes="$(zcat "$input" | cut -f 1 | uniq)"
+chromosomes="$(zcat "$peak_file" | cut -f 1 | uniq)"
 
-# Generate a file for each chromosome
+# Generate a file for each chromosome for peak_file
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
-    'zcat '$input' | grep '{}[[:space:]]' | gzip > '${tempfile}_{}.tmp.gz''
+    'zcat '$peak_file' | grep '{}[[:space:]]' | gzip > '${peak_temp}_{}.tmp.gz''
 
-# Generate kernel 
-"$generate_kernel" "$bandwidth" >> "$kernel_file"
+# Generate a file for each chromosome for smooth_file
+echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
+    'zcat '$smooth_file' | grep '{}[[:space:]]' | gzip > '${smooth_temp}_{}.tmp.gz''
 
 # Apply kernel and identify nucleosomes in all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
-    ''$apply_kernel' '${tempfile}_{}.tmp.gz' '$kernel_file' '$bandwidth' \
-    | gzip > '${tempfile}_{}.done.tmp.gz''
+    ''$tag_nucleosomes' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
+   | gzip > '${peak_temp}_{}.done.tmp.gz''
 
 # Concatenate all chromosomes and filter
-if [ "$collapse" ];
-then
-    zcat ${tempfile}_*.done.tmp.gz | \
-        sort -k 1,1 -k 2,2n -k 4,4n |\
-        groupBy -g 1,2 -c 3,4 -o collapse,collapse |\
-        gzip > "$outfile" 
-else
-    zcat ${tempfile}_*.done.tmp.gz | gzip > "$outfile" 
-fi
+zcat ${peak_temp}_*.done.tmp.gz | gzip > "$outfile" 
+
 # Remove temp file
-rm -f ${tempfile}*tmp*
+rm -f ${peak_temp}*tmp* ${smooth_temp}*tmp*
 
 # Time elapsed
 end_time="$(date +"%s%3N")"

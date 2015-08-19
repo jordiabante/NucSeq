@@ -2,5 +2,4 @@
 
 rm -rf out*
 
-../tag_nucleosomes.sh -t 4 -d out -b 21 -- input.cff.gz
-../tag_nucleosomes.sh -c -t 4 -d out_collapsed -b 21 -- input.cff.gz
+../tag_nucleosomes.sh -t 3 -d out -- peaks.cff.gz smooth.cff.gz
