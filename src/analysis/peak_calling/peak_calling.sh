@@ -63,7 +63,7 @@ input="$1"
 
 # Output
 input_basename="$(basename "$input")"
-prefix="${input_basename%%.*}"
+prefix="${input_basename%%_smooth.*}"
 extension="${input_basename#*.}"
 tempfile="${outdir}/${prefix}"
 outfile="${outdir}/${prefix}_peaks.${extension}"

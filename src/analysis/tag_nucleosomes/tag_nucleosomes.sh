@@ -64,7 +64,7 @@ smooth_file="$2"
 
 # Output
 peak_file_basename="$(basename "$peak_file")"
-peak_prefix="${peak_file_basename%%.*}"
+peak_prefix="${peak_file_basename%%_peaks.*}"
 peak_temp="${outdir}/${peak_prefix}"
 smooth_file_basename="$(basename "$smooth_file")"
 smooth_prefix="${smooth_file_basename%%.*}"

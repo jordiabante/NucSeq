@@ -84,5 +84,5 @@ then
 fi
 
 # Plot the distribution
-Rscript "${script_absdir}/R/${script_name}.R" "$outfile_txt" "$outfile_pdf"  &>/dev/null
+Rscript "${script_absdir}/R/${script_name}.R" "$outfile_txt" "$outfile_pdf" &>/dev/null
 rm -f "Rplots.pdf"

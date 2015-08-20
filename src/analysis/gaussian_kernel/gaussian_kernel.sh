@@ -27,7 +27,7 @@ eval set -- "$TEMP"
 
 # Defaults
 outdir="$PWD"
-bandwidth=150
+bandwidth=151
 threads=2
 
 # Options
@@ -73,7 +73,7 @@ prefix="${input_basename%%.*}"
 extension="${input_basename#*.}"
 tempfile="${outdir}/${prefix}"
 kernel_file="${tempfile}_kernel.tmp"
-outfile="${outdir}/${prefix}_normal_kernel_bw${bandwidth}.${extension}"
+outfile="${outdir}/${prefix}_smooth.${extension}"
 
 # Output directory
 mkdir -p "$outdir"
