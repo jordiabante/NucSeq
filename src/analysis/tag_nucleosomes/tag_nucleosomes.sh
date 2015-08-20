@@ -64,13 +64,15 @@ smooth_file="$2"
 
 # Output
 peak_file_basename="$(basename "$peak_file")"
-peak_prefix="${peak_file_basename%%_peaks.*}"
+peak_prefix="${peak_file_basename%%.*}"
 peak_temp="${outdir}/${peak_prefix}"
 smooth_file_basename="$(basename "$smooth_file")"
 smooth_prefix="${smooth_file_basename%%.*}"
 smooth_temp="${outdir}/${smooth_prefix}"
 kernel_file="${peak_temp}_kernel.tmp"
-outfile="${outdir}/${peak_prefix}_tags.cff.gz"
+outfile_prefix="${peak_file_basename%%_peaks*}"
+outfile_temp="${outdir}/${outfile_prefix}"
+outfile="${outdir}/${outfile_prefix}_tags.cff.gz"
 
 # Output directory
 mkdir -p "$outdir"
@@ -81,6 +83,7 @@ export smooth_file
 export peak_temp
 export smooth_temp
 export outfile
+export outfile_temp
 export tag_nucleosomes
 
 # Get chromosomes
@@ -97,10 +100,10 @@ echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
 # Apply kernel and identify nucleosomes in all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     ''$tag_nucleosomes' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
-   | gzip > '${peak_temp}_{}.done.tmp.gz''
+   | gzip > '${outfile_temp}_{}.done.tmp.gz''
 
 # Concatenate all chromosomes and filter
-zcat ${peak_temp}_*.done.tmp.gz | gzip > "$outfile" 
+zcat ${outfile_temp}_*.done.tmp.gz | gzip > "$outfile" 
 
 # Remove temp file
 rm -f ${peak_temp}*tmp* ${smooth_temp}*tmp*
