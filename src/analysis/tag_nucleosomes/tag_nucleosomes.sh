@@ -106,7 +106,7 @@ echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
 zcat ${outfile_temp}_*.done.tmp.gz | gzip > "$outfile" 
 
 # Remove temp file
-rm -f ${peak_temp}*tmp* ${smooth_temp}*tmp*
+rm -f ${peak_temp}*tmp* ${smooth_temp}*tmp* ${outfile_temp}*tmp*
 
 # Time elapsed
 end_time="$(date +"%s%3N")"
