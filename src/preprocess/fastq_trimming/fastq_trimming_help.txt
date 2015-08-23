@@ -7,10 +7,11 @@ Usage:
 Options:
   -h|--help           Help
   -d|--outdir         Output directory
-  -l|--readLength     Final read length. Default: '50'
+  -l|--read_length     Final read length. Default: '50'
 
 Examples:               
-  fastq_trimming.sh -l 40 -- testRound1_R1.fastq.gz
+  fastq_trimming.sh -l 40 -- read_R1.fastq.gz
+  zcat read_R1.fastq.gz | fastq_trimming.sh -l 40
 
 Date:
   2015/07/15

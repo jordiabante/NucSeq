@@ -28,13 +28,7 @@ abspath_script="$(readlink -f -e "$0")"
 script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
-if [ $# -eq 0 ]
-    then
-        cat "$script_absdir/${script_name}_help.txt"
-        exit 1
-fi
-
-TEMP=$(getopt -o hd:l: -l help,outdir:,length: -n "$script_name.sh" -- "$@")
+TEMP=$(getopt -o hd:l: -l help,outdir:,read_length: -n "$script_name.sh" -- "$@")
 
 if [ $? -ne 0 ] 
 then
@@ -46,8 +40,9 @@ eval set -- "$TEMP"
 
 # Defaults
 outdir="$PWD"
-readLength=50
+read_length=50
 
+# Options
 while true
 do
   case "$1" in
@@ -59,8 +54,8 @@ do
       outdir=$2
       shift 2
       ;;  
-    -l|--length)
-      readLength=$2
+    -l|--read_length)
+      read_length=$2
       shift 2
       ;;  
     --) 
@@ -74,13 +69,22 @@ do
   esac
 done
 
-# Read input
-inputFile=$1
-prefix="${inputFile%.*}"
-outfile="${outdir}/${prefix}_trim${readLength}.fastq.gz"
-
-# Run
-  zcat "$inputFile" | \
-    awk -v readLength="$readLength" '{if(NR%2!=0){print $0}else{print substr($0,0,readLength)}}' | \
-    gzip > "$outfile"
+# Check arguments and stdin
+if [ $# -ne 0 ]
+then
+    # Naming
+    input="$1"
+    prefix="${input%%.*}"
+    outfile="${outdir}/${prefix}_trim${read_length}.fastq.gz"
+    # Run
+    zcat -f "$input" \
+        | awk -v read_length="$read_length" '{if(NR%2!=0){print $0}else{print substr($0,0,read_length)}}' \
+        | gzip > "$outfile"
+elif [ -s /dev/stdin ]
+then
+    # Piped input and output
+    cat /dev/stdin | awk -v read_length="$read_length" '{if(NR%2!=0){print $0}else{print substr($0,0,read_length)}}'
+else 
+    echo "No input detected"
+fi
 
