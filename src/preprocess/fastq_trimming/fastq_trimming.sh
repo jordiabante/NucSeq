@@ -80,11 +80,11 @@ then
     zcat -f "$input" \
         | awk -v read_length="$read_length" '{if(NR%2!=0){print $0}else{print substr($0,0,read_length)}}' \
         | gzip > "$outfile"
-elif [ -s /dev/stdin ]
+elif [ ! -t 0 ]
 then
     # Piped input and output
     cat /dev/stdin | awk -v read_length="$read_length" '{if(NR%2!=0){print $0}else{print substr($0,0,read_length)}}'
-else 
+else
     echo "No input detected"
 fi
 
