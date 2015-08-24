@@ -8,7 +8,7 @@ Options:
     -h|--help           Help.
     -d|--outdir         Output directory. Default: $PWD.
     -t|--threads        Threads used. Default: 2.
-    -b|--bandwidth      Bandwidth of the kernel. Default: 150.
+    -b|--bandwidth      Bandwidth of the kernel. Default: 151.
 
 Examples:
     gaussian_kernel.sh -d out -b 200 -t 8 -- r4s1.cff.gz
@@ -21,7 +21,7 @@ Upstream:
     bedgraph_to_midpoints.sh
 
 Notes:
-    - A normalization is applied for eahc chromosome using the total number of fragments.
+    - A normalization is applied for each chromosome using the total number of fragments.
 
 Date:
     2015/07/31
