@@ -4,7 +4,7 @@ A multi-threaded nucleosome positioning analysis package based mainly on shell a
 
 Workflow
 ------------------
-![nucleosome_positioning_pipeline](https://raw.github.com/jordiabante/nucleosome_positioning/master/images/nucleosome_positioning_pipeline.png)
+![nucleosome_positioning_pipeline](https://raw.github.com/jordiabante/nucleosome_positioning/master/images/nucleosome_positioning_pipeline.jpg)
 
 Installation
 ------------------
