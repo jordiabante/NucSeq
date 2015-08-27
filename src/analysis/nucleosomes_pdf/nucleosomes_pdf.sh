@@ -29,7 +29,7 @@ script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
 # Find perl scripts
-tag_nucleosomes="${script_absdir}/perl/${script_name}.pl"
+nucleosomes_pdf="${script_absdir}/perl/${script_name}.pl"
 
 if [ $# -eq 0 ]
     then
@@ -107,7 +107,7 @@ export peak_temp
 export smooth_temp
 export outfile
 export outfile_temp
-export tag_nucleosomes
+export nucleosomes_pdf
 
 # Get chromosomes
 chromosomes="$(zcat "$peak_file" | cut -f 1 | uniq)"
@@ -130,7 +130,7 @@ echo "Time elapsed after chromosome division: $(( $end_time - $start_time )) ms"
 
 # Apply kernel and identify nucleosomes in all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
-    ''$tag_nucleosomes' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
+    ''$nucleosomes_pdf' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
    | gzip > '${outfile_temp}_{}.done.tmp.gz''
 
 # Time elapsed
