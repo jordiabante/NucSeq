@@ -39,11 +39,11 @@ my $nucleosome_tag = 1;
 my $peak_chr_fh = gzopen($peak_chr_gz, "rb") or die("can't open file:$!");
 
 # Loop through the file
-PEAK: while ($peak_chr_fh->gzreadline($_) > 0) 
+PEAK: while ($peak_chr_fh->gzreadline(my $PEAK) > 0) 
 {
-    chomp $_;
+    chomp($PEAK);
     ## Read peak info
-    my @line = split(/\s+/, $_);
+    my @line = split(/\s+/,$PEAK);
     my $peak_chr=$line[0];
     my $peak_pos=$line[1] ;
     my $peak_counts=$line[2];
@@ -55,22 +55,22 @@ PEAK: while ($peak_chr_fh->gzreadline($_) > 0)
     my $second_min=0;
     my $second_min_pos=0;
     my $prev_pos=0;
-    my @window_score = (0) x 200;
+    my @window_score = (0) x 250;
     ## Look for the nucleosome in the smooth file
     my $smooth_chr_fh = gzopen($smooth_chr_gz, "rb") or die("can't open file:$!");
-    SMOOTH: while ($smooth_chr_fh->gzreadline($_) > 0) 
+    SMOOTH: while ($smooth_chr_fh->gzreadline(my $SMOOTH) > 0) 
     {
         ## Read smooth info
-        chomp $_;
-        my @line = split(/\s+/, $_);
+        chomp($SMOOTH);
+        my @line = split(/\s+/,$SMOOTH);
         my $smooth_pos=$line[1] ;
         # Check if the area in the smooth file is near the peak position
-        next SMOOTH unless $peak_pos-$smooth_pos<=150;
+        next SMOOTH unless $peak_pos-$smooth_pos<=125;
         ## Read the rest of smooth info
         my $smooth_chr=$line[0];
         my $smooth_counts=$line[2];
         # Fill array
-        if(@window_score==200)
+        if(@window_score==250)
         {
             shift @window_score;
         }
