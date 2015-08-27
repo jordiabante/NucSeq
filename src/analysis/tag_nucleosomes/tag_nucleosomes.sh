@@ -116,22 +116,41 @@ chromosomes="$(zcat "$peak_file" | cut -f 1 | uniq)"
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     'zcat '$peak_file' | grep '{}[[:space:]]' | gzip > '${peak_temp}_{}.tmp.gz''
 
+# Time elapsed
+end_time="$(date +"%s%3N")"
+echo "Time elapsed after chromosome parsing: $(( $end_time - $start_time )) ms"
+
 # Generate a file for each chromosome for smooth_file
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     'zcat '$smooth_file' | grep '{}[[:space:]]' | gzip > '${smooth_temp}_{}.tmp.gz''
+
+# Time elapsed
+end_time="$(date +"%s%3N")"
+echo "Time elapsed after chromosome division: $(( $end_time - $start_time )) ms"
 
 # Apply kernel and identify nucleosomes in all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     ''$tag_nucleosomes' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
    | gzip > '${outfile_temp}_{}.done.tmp.gz''
 
+# Time elapsed
+end_time="$(date +"%s%3N")"
+echo "Time elapsed after chromosome tagging nucleosomes: $(( $end_time - $start_time )) ms"
+
 # Concatenate all chromosomes and filter
 zcat ${outfile_temp}_*.done.tmp.gz | gzip > "$outfile" 
+
+# Time elapsed
+end_time="$(date +"%s%3N")"
+echo "Time elapsed after concatenating chromosome files: $(( $end_time - $start_time )) ms"
 
 # Remove temp file
 rm -f ${peak_temp}*tmp* ${smooth_temp}*tmp* ${outfile_temp}*tmp*
 
 # Time elapsed
 end_time="$(date +"%s%3N")"
-echo "Time elapsed: $(( $end_time - $start_time )) ms"
+echo "Time elapsed after removing temporary files: $(( $end_time - $start_time )) ms"
 
+# Time elapsed
+end_time="$(date +"%s%3N")"
+echo "Done. Total time elapsed: "$(( $end_time - $start_time ))" ms"
