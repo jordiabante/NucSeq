@@ -13,7 +13,7 @@ Examples:
     nucleosomes_cdf.sh -d out -t 8 -- r4s1_pdf.cff.gz
 
 Dependancies:
-    bedtools
+    NA
 
 Upstream:
     nucleosomes_cdf.sh

@@ -1,8 +1,8 @@
 Description:
-    Tags nucleosomes and expands them. 
+    Tags nucleosomes and finds their PDF. 
 
 Usage:
-    tag_nucleosomes.sh  [options]  -- PEAKS_FILE SMOOTH_FILE
+    nucleosomes_pdf.sh  [options]  -- PEAKS_FILE SMOOTH_FILE
 
 Options:
     -h|--help           Help.
@@ -10,7 +10,7 @@ Options:
     -t|--threads        Threads used. Default: 2.
 
 Examples:
-    tag_nucleosomes.sh -d out -t 8 -- r4s1_peaks.cff.gz r4s1_smooth.cff.gz
+    nucleosomes_pdf.sh -d out -t 8 -- r4s1_peaks.cff.gz r4s1_smooth.cff.gz
 
 Dependancies:
     NA

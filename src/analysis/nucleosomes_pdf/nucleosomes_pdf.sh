@@ -29,7 +29,7 @@ script_absdir="$(dirname "$abspath_script")"
 script_name="$(basename "$0" .sh)"
 
 # Find perl scripts
-nucleosomes_pdf="${script_absdir}/perl/${script_name}.pl"
+perl_script="${script_absdir}/perl/${script_name}.pl"
 
 if [ $# -eq 0 ]
     then
@@ -95,7 +95,7 @@ smooth_temp="${outdir}/${smooth_prefix}"
 kernel_file="${peak_temp}_kernel.tmp"
 outfile_prefix="${peak_file_basename%%_peaks*}"
 outfile_temp="${outdir}/${outfile_prefix}"
-outfile="${outdir}/${outfile_prefix}_tags.cff.gz"
+outfile="${outdir}/${outfile_prefix}_pdf.cff.gz"
 
 # Output directory
 mkdir -p "$outdir"
@@ -107,7 +107,7 @@ export peak_temp
 export smooth_temp
 export outfile
 export outfile_temp
-export nucleosomes_pdf
+export perl_script
 
 # Get chromosomes
 chromosomes="$(zcat "$peak_file" | cut -f 1 | uniq)"
@@ -118,7 +118,7 @@ echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
 
 # Time elapsed
 end_time="$(date +"%s%3N")"
-echo "Time elapsed after chromosome parsing: $(( $end_time - $start_time )) ms"
+echo "Time elapsed after peaks chromosome division: $(( $end_time - $start_time )) ms"
 
 # Generate a file for each chromosome for smooth_file
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
@@ -126,11 +126,11 @@ echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
 
 # Time elapsed
 end_time="$(date +"%s%3N")"
-echo "Time elapsed after chromosome division: $(( $end_time - $start_time )) ms"
+echo "Time elapsed after smooth chromosome division: $(( $end_time - $start_time )) ms"
 
 # Apply kernel and identify nucleosomes in all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
-    ''$nucleosomes_pdf' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
+    ''$perl_script' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
    | gzip > '${outfile_temp}_{}.done.tmp.gz''
 
 # Time elapsed
@@ -146,10 +146,6 @@ echo "Time elapsed after concatenating chromosome files: $(( $end_time - $start_
 
 # Remove temp file
 rm -f ${peak_temp}*tmp* ${smooth_temp}*tmp* ${outfile_temp}*tmp*
-
-# Time elapsed
-end_time="$(date +"%s%3N")"
-echo "Time elapsed after removing temporary files: $(( $end_time - $start_time )) ms"
 
 # Time elapsed
 end_time="$(date +"%s%3N")"
