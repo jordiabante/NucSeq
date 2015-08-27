@@ -35,11 +35,23 @@ my $smooth_chr_gz = @ARGV[1];
 # Variables
 my $nucleosome_tag = 1;
 
-# Open peak_chr_file
+# Copy peaks to an array
 my $peak_chr_fh = gzopen($peak_chr_gz, "rb") or die("can't open file:$!");
+my @peak_file=();
+while ($peak_chr_fh->gzreadline(my $PEAK) > 0) 
+{
+    push @peak_file,$PEAK;
+}
+# Copy smooth to an array
+my $smooth_chr_fh = gzopen($smooth_chr_gz, "rb") or die("can't open file:$!");
+my @smooth_file=();
+while ($smooth_chr_fh->gzreadline(my $SMOOTH) > 0) 
+{
+    push @smooth_file,$SMOOTH;
+}
 
-# Loop through the file
-PEAK: while ($peak_chr_fh->gzreadline(my $PEAK) > 0) 
+# Loop through the arrays
+PEAK:foreach my $PEAK (@peak_file)
 {
     chomp($PEAK);
     ## Read peak info
@@ -56,9 +68,7 @@ PEAK: while ($peak_chr_fh->gzreadline(my $PEAK) > 0)
     my $second_min_pos=0;
     my $prev_pos=0;
     my @window_score = (0) x 250;
-    ## Look for the nucleosome in the smooth file
-    my $smooth_chr_fh = gzopen($smooth_chr_gz, "rb") or die("can't open file:$!");
-    SMOOTH: while ($smooth_chr_fh->gzreadline(my $SMOOTH) > 0) 
+    SMOOTH: foreach my $SMOOTH (@smooth_file) 
     {
         ## Read smooth info
         chomp($SMOOTH);
@@ -70,16 +80,10 @@ PEAK: while ($peak_chr_fh->gzreadline(my $PEAK) > 0)
         my $smooth_chr=$line[0];
         my $smooth_counts=$line[2];
         # Fill array
-        if(@window_score==250)
-        {
-            shift @window_score;
-        }
+        if(@window_score==250){shift @window_score};
         push @window_score,$smooth_counts;
         # Check if positions are equal
-        if($smooth_pos==$peak_pos && $first_min==1)
-        {
-            $nucleosome=1;
-        }
+        if($smooth_pos==$peak_pos && $first_min==1){$nucleosome=1};
         # Check for local minimum
         if(($window_score[-3]>$window_score[-2])&&($window_score[-2]<$window_score[-1])){
             if($first_min==0)
@@ -106,10 +110,7 @@ PEAK: while ($peak_chr_fh->gzreadline(my $PEAK) > 0)
             {
                 my $diff=-2-($second_min_pos-$i);
                 my $score=$window_score[$diff];
-                if($score>0)
-                {    
-                    print "$peak_chr\t$i\t$score\t$nucleosome_tag\n";
-                }
+                if($score>0){print "$peak_chr\t$i\t$score\t$nucleosome_tag\n"};
             }
             # Reset flags
             $first_min=0;
@@ -135,8 +136,5 @@ PEAK: while ($peak_chr_fh->gzreadline(my $PEAK) > 0)
             print "$peak_chr\t$i\t$score\t$nucleosome_tag\n";
         }
     }
-    # Close smooth file
-    $smooth_chr_fh->gzclose();
 }
-$peak_chr_fh->gzclose();
 exit;

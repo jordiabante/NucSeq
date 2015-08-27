@@ -131,7 +131,7 @@ echo "Time elapsed after smooth chromosome division: $(( $end_time - $start_time
 # Apply kernel and identify nucleosomes in all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
     ''$perl_script' '${peak_temp}_{}.tmp.gz' '${smooth_temp}_{}.tmp.gz' \
-   | gzip > '${outfile_temp}_{}.done.tmp.gz''
+    | gzip > '${outfile_temp}_{}.done.tmp.gz''
 
 # Time elapsed
 end_time="$(date +"%s%3N")"

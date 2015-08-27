@@ -43,11 +43,11 @@ my $chr_length = 0;
 ## Get average coverage
 # Open chr_file
 my $smooth_fh = gzopen($smooth_gz, "rb") or die("can't open file:$!");
-while ($smooth_fh->gzreadline($_) > 0) {
+while ($smooth_fh->gzreadline(my $SMOOTH) > 0) {
     # Chomp new line
-    chomp $_;
+    chomp($SMOOTH);
     # Get chr, pos and score
-    my @line = split(/\s+/, $_);
+    my @line = split(/\s+/,$SMOOTH);
     my $chr=$line[0];
     my $pos=$line[1] ;
     my $score=$line[2];
@@ -64,11 +64,11 @@ $smooth_fh->gzclose();
 my $smooth_fh = gzopen($smooth_gz, "rb") or die("can't open file:$!");
 
 # Loop through the file
-while ($smooth_fh->gzreadline($_) > 0) {
+while ($smooth_fh->gzreadline(my $SMOOTH) > 0) {
     # Chomp new line
-    chomp $_;
+    chomp($SMOOTH);
     # Get chr, pos and score
-    my @line = split(/\s+/, $_);
+    my @line = split(/\s+/, $SMOOTH);
     my $chr=$line[0];
     my $new_pos=$line[1] ;
     my $new_score=$line[2];
