@@ -42,11 +42,19 @@ my @window_pos = ();
 my @window_score = ();
 my @window_cdf = ();
 
-# Open chr_file
+# Read in input file to an array
 my $pdf_fh = gzopen($pdf_gz, "rb") or die("can't open file:$!");
+my @pdf_file=();
+while ($pdf_fh->gzreadline(my $PDF) > 0)  
+{
+    push @pdf_file,$PDF;
+}
+# Close gz file
+$pdf_fh->gzclose();
 
-# Loop through the file
-PDF:while ($pdf_fh->gzreadline(my $PDF) > 0) {
+# Loop through the array
+PDF:foreach my $PDF (@pdf_file)
+{
     # Chomp new line
     chomp($PDF);
     # Get chr, pos and score
@@ -54,6 +62,7 @@ PDF:while ($pdf_fh->gzreadline(my $PDF) > 0) {
     $chr=$line[0];
     $new_pos=$line[1] ;
     $new_score=$line[2];
+    $new_id=$line[3];
     # Check for continuity
     if( $new_pos == $pos_1 + 1 )
     {
@@ -78,9 +87,6 @@ PDF:while ($pdf_fh->gzreadline(my $PDF) > 0) {
 # Print last group
 @window_cdf = cdf(\@window_pos,\@window_score);
 print_nuc($chr,\@window_pos,\@window_cdf,\@window_score);
-
-# Close gz file
-$pdf_fh->gzclose();
 
 # Subroutine to compute CDF
 sub cdf {

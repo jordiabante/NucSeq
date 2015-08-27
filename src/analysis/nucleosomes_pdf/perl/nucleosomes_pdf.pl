@@ -49,6 +49,9 @@ while ($smooth_chr_fh->gzreadline(my $SMOOTH) > 0)
 {
     push @smooth_file,$SMOOTH;
 }
+# Close gz files
+$peak_chr_fh->gzclose();
+$smooth_chr_fh->gzclose();
 
 # Loop through the arrays
 PEAK:foreach my $PEAK (@peak_file)
