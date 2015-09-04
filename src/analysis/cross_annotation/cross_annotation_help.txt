@@ -18,14 +18,13 @@ Dependancies:
 Upstream:
     gaussian_kernel.sh: if the feature to be studied is the distribution.
     peak_calling.sh: if the feature to be studied are the peaks.
-    tag_nucleosomes.sh: if nucleosomes are the feature to be studied.
 
 Notes:
     - Input format: chromosome-position-score-nucleosome_tag(optional)
-    - Output format: chromosome-position-score-nucleosome_tag-promoter_ID-start-end-strand
+    - Output format: chromosome-position-score-feature_id
 
 Date:
-    2015/08/08
+    2015/09/04
 
 Author:
     Jordi Abante <abante.jordi@gmail.com>

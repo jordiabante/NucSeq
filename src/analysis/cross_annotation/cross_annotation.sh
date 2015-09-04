@@ -113,8 +113,8 @@ echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
 
 # Cross input with reference for all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
-    ''$perl_script' '${tempfile}_{}.tmp.gz' '${reference_file}'\
-    | gzip > '${tempfile}_{}.done.tmp.gz''
+    ''$perl_script' '${tempfile}_{}.tmp.gz' '${reference_file}' \
+    | gzip > '${tempfile}_{}.done.tmp.gz'' 
 
 # Concatenate all chromosomes and filter
 zcat ${tempfile}_*.done.tmp.gz | sort -k 1,1 -k 2,2n | gzip > "$outfile" 

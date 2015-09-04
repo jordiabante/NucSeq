@@ -28,39 +28,94 @@ use Compress::Zlib;
 
 # Read arguments
 my $scriptname = $0;
-my $peaks_gz = @ARGV[0];
+my $input_gz = @ARGV[0];
 my $reference = @ARGV[1];
 
 # Variables
+my %gff=();         # Hash table containing annotation file
+my @input=();       # Array containing the input content
 
-# Open reference file
-open REFERENCE, $reference or die $!;
+## Main
+read_gff();
+read_input();
+cross();
+#print_gff();
+#print_input();
 
-# Loop through the file
-while (my $feat = <REFERENCE>){
-    # Chomp new line
-    chomp $feat;
-    # Get info from the feature
-    my ($feat_chr,$feat_origin,$feat_type,$feat_st,$feat_end,$junk,$feat_strand,$junk,$feat_id)=split "\t", $feat; 
-    # Open the peaks file
-    my $peaks_fh = gzopen($peaks_gz, "rb") or die("can't open file:'$peaks_gz' $!");
-    # Parse the peaks file
-    while ($peaks_fh->gzreadline($_) > 0) {
+## Read in gff file
+sub read_gff
+{
+    open REFERENCE, $reference or die $!;
+    while (my $feat = <REFERENCE>){
         # Chomp new line
-        chomp $_;
-        # Get chr, pos and score
-        my ($peak_chr, $peak_pos, $peak_score,$nucleosome)=split "\t", $_;
-        if (($feat_chr eq $peak_chr) && ($feat_st <= $peak_pos) && ($feat_end >= $peak_pos)){
-            my $score = sprintf '%.4f', "$peak_score";
-            print "$peak_chr\t$peak_pos\t$score\t$nucleosome\t$feat_id\t$feat_st\t$feat_end\t$feat_strand\n";
+        chomp $feat;
+        # Get info from the feature
+        my @feature = split "\t", $feat; 
+        my $feature_id=$feature[8];
+        # Add feature to hash table
+        if (exists($gff{$feature_id}))
+        {
+            print STDERR "Repeated features in the gff file $reference.\n";
+        }
+        else
+        {
+            $gff{$feature_id}=[@feature];
         }
     }
-    # Close the peaks file
-    $peaks_fh->gzclose();
+    # Close files
+    close REFERENCE or die $!;
 }
 
-# Close files
-close REFERENCE or die $!;
+## Read in input file
+sub read_input
+{
+    # Open the peaks file
+    my $input_fh = gzopen($input_gz, "rb") or die("Can't open file:'$input_gz'\n$!");
+    # Parse the input file
+    while ($input_fh->gzreadline(my $line) > 0) 
+    {
+        # Chomp new line
+        chomp $line;
+        # Push array
+        push @input,$line;
+    }
+    # Close the input file
+    $input_fh->gzclose();
+}
 
-# Exit
-exit;
+## Where the magic happens
+sub cross
+{
+    foreach my $key (keys %gff)
+    {
+        COORD:foreach my $line (@input)
+        {
+            my @line = split "\t", $line; 
+            next COORD unless (@{$gff{$key}}[0] eq @line[0]);
+            if ((@{$gff{$key}}[3] <= @line[1]) and (@{$gff{$key}}[4] >= @line[1]))
+            {
+                # Print
+                print "$line[0]\t$line[1]\t$line[2]\t@{$gff{$key}}[8]\n";
+            }
+
+        }
+    }
+}
+
+## Print gff
+sub print_gff
+{
+    foreach my $key (sort keys %gff)
+    {
+        print "@{$gff{$key}}\n";
+    }
+}
+
+## Print input
+sub print_input
+{
+    foreach my $line (@input)
+    {
+        print "$line\n";
+    }
+}
