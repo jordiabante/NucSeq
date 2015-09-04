@@ -42,7 +42,7 @@ my $chr_length = 0;
 
 ## Get average coverage
 # Open chr_file
-my $smooth_fh = gzopen($smooth_gz, "rb") or die("can't open file:$!");
+my $smooth_fh = gzopen($smooth_gz, "rb") or die("can't open file $smooth_gz:$!");
 while ($smooth_fh->gzreadline(my $SMOOTH) > 0) {
     # Chomp new line
     chomp($SMOOTH);
@@ -61,7 +61,7 @@ $smooth_fh->gzclose();
 
 ## Look for significant peaks
 # Open chr_file
-my $smooth_fh = gzopen($smooth_gz, "rb") or die("can't open file:$!");
+my $smooth_fh = gzopen($smooth_gz, "rb") or die("can't open file $smooth_gz:$!");
 
 # Loop through the file
 while ($smooth_fh->gzreadline(my $SMOOTH) > 0) {

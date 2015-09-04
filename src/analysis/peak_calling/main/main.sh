@@ -2,4 +2,4 @@
 
 rm -rf out
 
-../peak_calling.sh -t 4 -d out -- input.cff.gz
+../peak_calling.sh -t 4 -d out -- input_smooth.cff.gz
