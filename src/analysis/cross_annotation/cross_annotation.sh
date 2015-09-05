@@ -82,34 +82,34 @@ done
 start_time="$(date +"%s%3N")"
 
 # Inputs
-peaks_file="$1"
+input_file="$1"
 reference_file="$2"
 
 # Output
-peaks_file_basename="$(basename "$peaks_file")"
+input_file_basename="$(basename "$input_file")"
 reference_file_basename="$(basename "$reference_file")"
-peaks_prefix="${peaks_file_basename%%.*}"
+input_prefix="${input_file_basename%%.*}"
 reference_prefix="${reference_file_basename%%.*}"
-extension="${peaks_file_basename#*.}"
-tempfile="${outdir}/${peaks_prefix}"
-outfile="${outdir}/${peaks_prefix}_in_${reference_prefix}.${extension}"
+extension="${input_file_basename#*.}"
+tempfile="${outdir}/${input_prefix}"
+outfile="${outdir}/${input_prefix}_in_${reference_prefix}.${extension}"
 
 # Output directory
 mkdir -p "$outdir"
 
 # Export variables
-export peaks_file
+export input_file
 export reference_file
 export tempfile
 export outfile
 export perl_script
 
 # Get chromosomes
-chromosomes="$(zcat "$peaks_file" | cut -f 1 | uniq)"
+chromosomes="$(zcat "$input_file" | cut -f 1 | uniq)"
 
 # Generate a file for each chromosome
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
-    'zcat '$peaks_file' | grep '{}[[:space:]]' | gzip > '${tempfile}_{}.tmp.gz''
+    'zcat '$input_file' | grep '{}[[:space:]]' | gzip > '${tempfile}_{}.tmp.gz''
 
 # Cross input with reference for all the chromosomes
 echo "$chromosomes" | xargs -I {} --max-proc "$threads" bash -c \
