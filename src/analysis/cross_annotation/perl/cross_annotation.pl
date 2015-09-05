@@ -99,7 +99,8 @@ sub cross
             if ((@{$gff{$key}}[3] <= @line[1]) and (@{$gff{$key}}[4] >= @line[1]))
             {
                 # Print
-                print "@line[0]\t@line[1]\t@line[2]\t@{$gff{$key}}[8]\n";
+                print "@line[0]\t@line[1]\t@line[2]\t";
+                print "@{$gff{$key}}[8]\t@{$gff{$key}}[3]\t@{$gff{$key}}[4]\t@{$gff{$key}}[6]\n";
             }
 
         }
