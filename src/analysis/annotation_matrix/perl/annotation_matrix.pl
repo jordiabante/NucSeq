@@ -23,7 +23,7 @@
 ##SOFTWARE.
 # ------------------------------------------------------------------------------
 # Libraries
-#use strict;
+use strict;
 use Compress::Zlib;
 
 # Read arguments
