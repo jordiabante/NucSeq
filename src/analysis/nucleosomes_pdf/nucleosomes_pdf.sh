@@ -145,7 +145,7 @@ end_time="$(date +"%s%3N")"
 echo "Time elapsed after concatenating chromosome files: $(( $end_time - $start_time )) ms"
 
 # Remove temp file
-rm -f ${peak_temp}*tmp* ${smooth_temp}*tmp* ${outfile_temp}*tmp*
+rm -f ${peak_temp}_*tmp* ${smooth_temp}_*tmp* ${outfile_temp}_*tmp*
 
 # Time elapsed
 end_time="$(date +"%s%3N")"

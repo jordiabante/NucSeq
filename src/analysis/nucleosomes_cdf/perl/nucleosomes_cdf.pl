@@ -26,7 +26,6 @@
 # Libraries
 use strict;
 use Compress::Zlib;
-sub cdf;
 
 # Read arguments
 my $scriptname = $0;
@@ -38,6 +37,7 @@ my $pos_1 = -1;
 my $chr="";
 my $new_pos=0;
 my $new_score=0;
+my $new_id=0;
 my @window_pos = ();
 my @window_score = ();
 my @window_cdf = ();
