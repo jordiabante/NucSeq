@@ -91,11 +91,15 @@ sub cross
         COORD:foreach my $line (@input)
         {
             my @line = split "\t", $line; 
+            # Next feature if chromosomes are not equal
             next COORD unless (@{$gff{$key}}[0] eq @line[0]);
+            # Next feature if position in input is greater than feature's
+            next COORD if (@line[1] > @{$gff{$key}}[4]);
+            # Check if input's position falls inside the feature area
             if ((@{$gff{$key}}[3] <= @line[1]) and (@{$gff{$key}}[4] >= @line[1]))
             {
                 # Print
-                print "$line[0]\t$line[1]\t$line[2]\t@{$gff{$key}}[8]\n";
+                print "@line[0]\t@line[1]\t@line[2]\t@{$gff{$key}}[8]\n";
             }
 
         }
