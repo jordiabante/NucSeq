@@ -1,0 +1,30 @@
+Description:
+    Build a symmetrical matrix out of an annotated file.
+
+Usage:
+    annotation_matrix.sh  [options]  -- CFF_FILE GFF_FILE
+
+Options:
+    -h|--help           Help.
+    -d|--outdir         Output directory. Default: $PWD.
+    -t|--threads        Threads used. Default: 2.
+
+Examples:
+    annotation_matrix.sh -d out -t 8 -- r4s1.cff.gz
+
+Dependancies:
+    bedtools
+
+Upstream:
+    cross_annotation.sh
+
+Notes:
+    - Input format: chromosome-position-score-feature_id-start-end-strand
+    - Output format: feature_id-scores
+
+Date:
+    2015/09/05
+
+Author:
+    Jordi Abante <abante.jordi@gmail.com>
+    https://jordiabante.wordpress.com
