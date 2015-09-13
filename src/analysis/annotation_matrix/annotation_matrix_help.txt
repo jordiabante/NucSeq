@@ -13,7 +13,7 @@ Examples:
     annotation_matrix.sh -d out -t 8 -- r4s1.cff.gz
 
 Dependancies:
-    bedtools
+    NONE 
 
 Upstream:
     cross_annotation.sh

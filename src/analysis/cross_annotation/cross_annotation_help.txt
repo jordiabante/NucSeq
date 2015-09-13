@@ -13,7 +13,7 @@ Examples:
     cross_annotation.sh -d out -t 8 -- r4s1.cff.gz reference.gff
 
 Dependancies:
-    bedtools
+    NONE
 
 Upstream:
     gaussian_kernel.sh: if the feature to be studied is the distribution.

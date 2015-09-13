@@ -56,13 +56,13 @@ $smooth_chr_fh->gzclose();
 # Loop through the arrays
 PEAK:foreach my $PEAK (@peak_file)
 {
-    chomp($PEAK);
     ## Read peak info
     my @line = split(/\s+/,$PEAK);
     my $peak_chr=$line[0];
     my $peak_pos=$line[1] ;
     my $peak_counts=$line[2];
     # Other variables
+    my $smooth_sentinel=0;
     my $nucleosome=0;
     my $nucleosome_flag=0;
     my $first_min=1;
@@ -74,11 +74,10 @@ PEAK:foreach my $PEAK (@peak_file)
     SMOOTH: foreach my $SMOOTH (@smooth_file) 
     {
         ## Read smooth info
-        chomp($SMOOTH);
         my @line = split(/\s+/,$SMOOTH);
         my $smooth_pos=$line[1] ;
         # Check if the area in the smooth file is near the peak position
-        next SMOOTH unless $peak_pos-$smooth_pos<=125;
+        next SMOOTH unless (($peak_pos-$smooth_pos)<=125);
         ## Read the rest of smooth info
         my $smooth_chr=$line[0];
         my $smooth_counts=$line[2];
@@ -115,6 +114,10 @@ PEAK:foreach my $PEAK (@peak_file)
                 my $score=$window_score[$diff];
                 if($score>0){print "$peak_chr\t$i\t$score\t$nucleosome_tag\n"};
             }
+            # Remove nucleosome from smooth array
+#            my $nucleosome_length=$second_min_pos-$first_min_pos;
+#            my $offset=$smooth_sentinel-$nucleosome_length;
+#            splice @smooth_file,$offset,$nucleosome_length;
             # Reset flags
             $first_min=0;
             $second_min=0;
@@ -126,6 +129,8 @@ PEAK:foreach my $PEAK (@peak_file)
         }
         # Refresh previous position
         $prev_pos=$smooth_pos;
+        # Increase sentinel
+        $smooth_sentinel++;
         ## Stop parsing if the nucleosome has been found
         last SMOOTH if $nucleosome_flag==1;
     }
@@ -140,4 +145,3 @@ PEAK:foreach my $PEAK (@peak_file)
         }
     }
 }
-exit;
