@@ -1,0 +1,26 @@
+Description:
+    Find median position of the nucleosome.
+
+Usage:
+    nucleosomes_median_position.sh  [options]  -- CDF_FILE
+
+Options:
+    -h|--help           Help.
+    -d|--outdir         Output directory. Default: $PWD.
+    -t|--threads        Threads used. Default: 2.
+
+Examples:
+    nucleosomes_median_position.sh -d out -t 8 -- r4s1_cdf.cff.gz
+
+Dependancies:
+    NA
+
+Upstream:
+    nucleosomes_cdf.sh
+
+Date:
+    2015/08/27
+
+Author:
+    Jordi Abante <abante.jordi@gmail.com>
+    https://jordiabante.wordpress.com
