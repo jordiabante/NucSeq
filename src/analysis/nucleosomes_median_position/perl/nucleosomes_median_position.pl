@@ -48,7 +48,8 @@ my $nuc_start=0;
 my $nucleosome_found=0;
 my $start_over=0;
 my $first_line=1;
-
+# Output
+my @raw_output=();
 
 # Main
 read_cdf();
@@ -106,7 +107,9 @@ sub process_cdf
         if(($new_score ==1)and($nucleosome_found==1))
         {   
             $nuc_end=$new_pos;
-            print "$chr\t$med_pos\t$med_score\t$nuc_start\t$nuc_end\n"; 
+            my @nucleosome=($chr,$med_pos,$med_score,$nuc_start,$nuc_end);
+            push @raw_output,@nucleosome;
+            #print "$chr\t$med_pos\t$med_score\t$nuc_start\t$nuc_end\n"; 
             $start_over=1;
             $nucleosome_found=0;
         }
@@ -116,3 +119,13 @@ sub process_cdf
     }
 }
 
+sub review_size
+{
+    for my $i ( 0 .. $#raw_output) 
+    {
+        print "$raw_output[$i][1]\n"; 
+        if($raw_output[$i][5]-$raw_output[$i][4]<=200)
+        {
+        }
+    }
+}
