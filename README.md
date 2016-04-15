@@ -1,6 +1,6 @@
 Description
 ------------------
-A multi-threaded nucleosome positioning analysis package based mainly on shell and perl scripts.
+NucSeq is a multi-threaded nucleosome sequencing analysis package based mainly on shell and perl scripts.
 
 Workflow
 ------------------
